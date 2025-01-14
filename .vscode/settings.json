@@ -2,6 +2,7 @@
     "files.associations": {
         "stdio.h": "c",
         "stdbool.h": "c",
-        "ios": "c"
+        "ios": "c",
+        "map.h": "c"
     }
 }
