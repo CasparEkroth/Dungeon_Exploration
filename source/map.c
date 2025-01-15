@@ -52,7 +52,6 @@ Map *createMap(SDL_Renderer *pRenderre){
             pMap->tileRect[x][y].x = x * TILE_SIZE;
             pMap->tileRect[x][y].y = y * TILE_SIZE;
         }
-        
     }
     redeFileForMap(pMap->tileMap,pMap->mapFile,pMap->curentRoom);
     
