@@ -40,3 +40,6 @@ void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X], char f
     fclose(fp);
     printMap(tileMap);
 }
+
+//en ide är att ha en till text fil som har kombinationen som 
+//om man står på en tile som har ett U = rum2 eller T = rum44
