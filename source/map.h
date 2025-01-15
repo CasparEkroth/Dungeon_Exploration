@@ -9,5 +9,22 @@
 #include <stdlib.h> 
 #include <stdio.h>
 
+#define NUMMBER_OF_TILSE_Y 100
+#define NUMMBER_OF_TILSE_X 100
+#define NUMMBER_OF_DIFFERENT_TILSE 5 
+
+typedef struct {
+    char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X];
+    SDL_Texture *pTileShet;
+    SDL_Rect tileIndex[NUMMBER_OF_DIFFERENT_TILSE];
+}Map;
+
+typedef struct {
+    TTF_Font *font;
+
+}Menu;
+
+void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]);
+
 
 #endif 
