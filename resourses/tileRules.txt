@@ -8,3 +8,9 @@ fixa reglöer för hur vissa block ska behandlas
 
 //en ide är att ha en till text fil som har kombinationen som 
 //om man står på en tile som har ett U = rum2 eller T = rum44
+
+
+// en ide är att du börjar överst eller underst och fortsäter up/ner
+// mde ökan de såvrighet och om jag vill kan jag lägga till boss rum ksk
+
+(börjar mde upp och ner)

@@ -1,9 +1,13 @@
 #include <SDL.h>
 #include "game.h"
+
+
+
+
 int main(){
-    char karta[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]={0};
-    redeFileForMap(karta,"resourses/mapFile.txt","rum2");
-    printf("\n");
-    redeFileForMap(karta,"resourses/mapFile.txt","start");
+    Game g ={0};
+    SDL_Event event;
+    gameRun(&g);
+    closeGame(&g);
     return 0;
 }

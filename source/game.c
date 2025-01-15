@@ -1,5 +1,15 @@
 #include "game.h"
 
+void gameRun(Game *pGame){
+    pGame->game_is_runing = true;
+    while (pGame->game_is_runing){
+        //render()
+        //handel input and uppdate 
+    }
+    
+    initialize_window(pGame);
+}
+
 // Initialiserar SDL och skapar fönster
 int initialize_window(Game *pGame){
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0 || TTF_Init() != 0 || SDL_Init(SDL_INIT_AUDIO) < 0){
