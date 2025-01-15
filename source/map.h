@@ -8,9 +8,10 @@
 #include <SDL_image.h>
 #include <stdlib.h> 
 #include <stdio.h>
+#include <string.h>
 
-#define NUMMBER_OF_TILSE_Y 100
-#define NUMMBER_OF_TILSE_X 100
+#define NUMMBER_OF_TILSE_Y 25
+#define NUMMBER_OF_TILSE_X 25
 #define NUMMBER_OF_DIFFERENT_TILSE 5 
 
 typedef struct {
@@ -24,7 +25,7 @@ typedef struct {
 
 }Menu;
 
-void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]);
-
+void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X],char fileName[],char newRom[]);
+void printMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]);
 
 #endif 
