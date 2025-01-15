@@ -23,7 +23,7 @@ void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X], char f
     char buffer[256];
     FILE *fp = fopen(fileName, "r");
     if (fp == NULL) {
-        printf("Fel: Filen kunde inte öppnas!\n");
+        printf("Error: Clude not open %s!\n",fileName);
         return;
     }
     while (fgets(buffer, sizeof(buffer), fp)) {
@@ -41,5 +41,11 @@ void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X], char f
     printMap(tileMap);
 }
 
-//en ide är att ha en till text fil som har kombinationen som 
-//om man står på en tile som har ett U = rum2 eller T = rum44
+Map *createMap(SDL_Renderer *pRenderre){
+    Map *pMap = malloc(sizeof(Map));
+    strcpy(pMap->tileRulseFile,"resourses/tileRules.txt");
+    strcpy(pMap->curentRoom,"start");
+    stpcpy(pMap->mapFile,"resourses/mapFile.txt");
+
+    return pMap;
+}

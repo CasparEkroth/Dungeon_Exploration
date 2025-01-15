@@ -1,0 +1,10 @@
+v void#
+
+
+
+
+
+fixa reglöer för hur vissa block ska behandlas 
+
+//en ide är att ha en till text fil som har kombinationen som 
+//om man står på en tile som har ett U = rum2 eller T = rum44
