@@ -37,6 +37,10 @@ int initialize_window(Game *pGame){
 }
 
 void closeGame(Game *pGame){
+    if(pGame->pMap){
+        //destroy eventuel texturr 
+        free(pGame->pMap);
+    }
     if (pGame->pRenderer) SDL_DestroyRenderer(pGame->pRenderer);
     if (pGame->pWindow) SDL_DestroyWindow(pGame->pWindow);
     Mix_CloseAudio();

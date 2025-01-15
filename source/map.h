@@ -14,6 +14,7 @@
 #define NUMMBER_OF_TILSE_Y 25
 #define NUMMBER_OF_TILSE_X 25
 #define NUMMBER_OF_DIFFERENT_TILSE 5 
+#define TILE_SIZE 32 
 
 typedef struct {
     char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X];

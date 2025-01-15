@@ -46,6 +46,15 @@ Map *createMap(SDL_Renderer *pRenderre){
     strcpy(pMap->tileRulseFile,"resourses/tileRules.txt");
     strcpy(pMap->curentRoom,"start");
     stpcpy(pMap->mapFile,"resourses/mapFile.txt");
-
+    for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
+        for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
+            pMap->tileRect[x][y].w = pMap->tileRect[x][y].h = TILE_SIZE;
+            pMap->tileRect[x][y].x = x * TILE_SIZE;
+            pMap->tileRect[x][y].y = y * TILE_SIZE;
+        }
+        
+    }
+    redeFileForMap(pMap->tileMap,pMap->mapFile,pMap->curentRoom);
+    
     return pMap;
 }
