@@ -1,15 +1,45 @@
 #include "game.h"
 
-void gameRun(Game *pGame){
-    pGame->game_is_runing = true;
-    while (pGame->game_is_runing){
+void gameRun(Game *pGame,SDL_Event event){
+    pGame->game_is_running = true;
+    while (pGame->game_is_running){
+        input(pGame,event);
         //render()
         //handel input and uppdate 
     }
     
-    initialize_window(pGame);
+    
 }
 
+void input(Game *pGame, SDL_Event event){
+    SDL_ShowCursor(SDL_DISABLE);
+    while (SDL_PollEvent(&event)){
+        switch (event.type)
+        {
+        case SDL_QUIT: 
+            pGame->game_is_running = false;
+            break;
+        case SDL_KEYDOWN:
+            pGame->keys[event.key.keysym.scancode] = true;
+            break;
+        case SDL_KEYUP:
+            pGame->keys[event.key.keysym.scancode] = false;
+            break;
+        default:
+            break;
+        }
+    }
+    if(pGame->keys[event.window.event]){
+    if (SDL_GetWindowFlags(pGame->pWindow) & SDL_WINDOW_FULLSCREEN){
+    SDL_SetWindowFullscreen(pGame->pWindow, 0);  // Switch back to windowed mode
+    }else{
+        SDL_SetWindowFullscreen(pGame->pWindow, SDL_WINDOW_FULLSCREEN);  // Fullscreen mode
+    }
+    }
+    if(pGame->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
+    if(pGame->keys[SDL_SCANCODE_LEFT]){
+    }
+}
 // Initialiserar SDL och skapar fönster
 int initialize_window(Game *pGame){
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0 || TTF_Init() != 0 || SDL_Init(SDL_INIT_AUDIO) < 0){
