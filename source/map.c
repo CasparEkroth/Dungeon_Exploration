@@ -15,9 +15,25 @@ void renderMap(SDL_Renderer *pRenderer, Map *pMap){
         for (int  x = 0; x < NUMMBER_OF_TILSE_X; x++){
             switch (pMap->tileMap[y][x]){
             case 'v': //void
-                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[0],&pMap->tileRect[y][x]);
+                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[2],&pMap->tileRect[y][x]);
                 break;
             case 'k': 
+                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[3],&pMap->tileRect[y][x]);
+                break;
+            case 'e':
+                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[4],&pMap->tileRect[y][x]);
+                break;
+            case 'a':
+                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[1],&pMap->tileRect[y][x]);
+                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[5],&pMap->tileRect[y][x]);
+                break;
+            case 'b':
+                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[6],&pMap->tileRect[y][x]);
+                break;
+            case 'c':
+                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[1],&pMap->tileRect[y][x]);
+                SDL_RendererFlip a;
+                SDL_RenderCopyEx(pRenderer,pMap->pTileShet,&pMap->tileIndex[7],&pMap->tileRect[y][x],180,NULL,a);
                 break;
             default:
                 break;
@@ -73,7 +89,6 @@ Map *createMap(SDL_Renderer *pRenderre){
         }
     }
     redeFileForMap(pMap->tileMap,pMap->mapFile,pMap->curentRoom);
-    pMap->tileIndex[0] =(SDL_Rect){80,80,16,16};
     SDL_Surface *tmpMap = IMG_Load("resourses/map.png");
     if(!tmpMap){
         fprintf(stderr,"Error creating Surface for map, %s\n",IMG_GetError());
@@ -85,6 +100,15 @@ Map *createMap(SDL_Renderer *pRenderre){
         fprintf(stderr,"Error creating Texture for map, %s\n",IMG_GetError());
         return NULL;
     }
+    pMap->tileIndex[0] = (SDL_Rect){80,80,16,16}; // floor 1
+    pMap->tileIndex[1] = (SDL_Rect){80,96,16,16}; // floor 2
+    pMap->tileIndex[2] = (SDL_Rect){80,64,16,16}; // floor 3
+    pMap->tileIndex[3] = (SDL_Rect){101,13,16,16}; //wall 1 (flat)
+    pMap->tileIndex[4] = (SDL_Rect){144,165,16,16}; //wall/turn (left -> dowen)
+    pMap->tileIndex[5] = (SDL_Rect){80,150,16,16}; //wall side (left)
+    pMap->tileIndex[6] = (SDL_Rect){127,165,16,16}; //wall/turn (rhigt -> dowen)
+    pMap->tileIndex[7] = (SDL_Rect){81,150,16,16}; //wall side (left)(neds Ex)
+
 
     return pMap;
 }
