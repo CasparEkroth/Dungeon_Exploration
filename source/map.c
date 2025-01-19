@@ -10,6 +10,24 @@ void printMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]){
 }
 }
 
+void renderMap(SDL_Renderer *pRenderer, Map *pMap){
+    for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
+        for (int  x = 0; x < NUMMBER_OF_TILSE_X; x++){
+            switch (pMap->tileMap[y][x]){
+            case 'v': //void
+                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[0],&pMap->tileRect[y][x]);
+                break;
+            case 'k': 
+                break;
+            default:
+                break;
+            }
+        }
+        
+    }
+    
+}
+
 void trimWhitespace(char *str) {// Ta bort extra whitespace
     char *end;
     while (isspace((unsigned char)*str)) str++;
@@ -48,12 +66,25 @@ Map *createMap(SDL_Renderer *pRenderre){
     stpcpy(pMap->mapFile,"resourses/mapFile.txt");
     for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
         for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
-            pMap->tileRect[x][y].w = pMap->tileRect[x][y].h = TILE_SIZE;
-            pMap->tileRect[x][y].x = x * TILE_SIZE;
-            pMap->tileRect[x][y].y = y * TILE_SIZE;
+            pMap->tileRect[y][x].w = TILE_SIZE;
+            pMap->tileRect[y][x].h = TILE_SIZE;
+            pMap->tileRect[y][x].x = (x * TILE_SIZE);
+            pMap->tileRect[y][x].y = (y * TILE_SIZE);
         }
     }
     redeFileForMap(pMap->tileMap,pMap->mapFile,pMap->curentRoom);
-    
+    pMap->tileIndex[0] =(SDL_Rect){80,80,16,16};
+    SDL_Surface *tmpMap = IMG_Load("resourses/map.png");
+    if(!tmpMap){
+        fprintf(stderr,"Error creating Surface for map, %s\n",IMG_GetError());
+        return NULL;
+    }
+    pMap->pTileShet = SDL_CreateTextureFromSurface(pRenderre,tmpMap);
+    SDL_FreeSurface(tmpMap);
+    if(!pMap->pTileShet){
+        fprintf(stderr,"Error creating Texture for map, %s\n",IMG_GetError());
+        return NULL;
+    }
+
     return pMap;
 }

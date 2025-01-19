@@ -16,6 +16,9 @@
 #define NUMMBER_OF_DIFFERENT_TILSE 5 
 #define TILE_SIZE 32 
 
+#define VISIBLE_WINDOW_Y 15
+
+
 typedef struct {
     char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X];
     SDL_Texture *pTileShet;
@@ -32,6 +35,7 @@ typedef struct {
 }Menu;
 
 Map *createMap(SDL_Renderer *pRenderre);
+void renderMap(SDL_Renderer *pRenderer, Map *pMap);
 
 
 void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X],char fileName[],char newRom[]);

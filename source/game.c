@@ -4,12 +4,19 @@ void gameRun(Game *pGame,SDL_Event event){
     pGame->game_is_running = true;
     while (pGame->game_is_running){
         input(pGame,event);
-        //render()
+        render(pGame);
         //handel input and uppdate 
     }
     
     
 }
+
+void render(Game *pGame){
+    SDL_RenderClear(pGame->pRenderer);
+    renderMap(pGame->pRenderer,pGame->pMap);
+    SDL_RenderPresent(pGame->pRenderer);
+}
+
 
 void input(Game *pGame, SDL_Event event){
     SDL_ShowCursor(SDL_DISABLE);
@@ -78,7 +85,7 @@ int initialize_window(Game *pGame){
 
 void closeGame(Game *pGame){
     if(pGame->pMap){
-        //destroy eventuel texturr 
+        if(pGame->pMap->pTileShet) SDL_DestroyTexture(pGame->pMap->pTileShet);
         free(pGame->pMap);
     }
     if (pGame->pRenderer) SDL_DestroyRenderer(pGame->pRenderer);
