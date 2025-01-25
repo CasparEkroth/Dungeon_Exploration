@@ -16,10 +16,12 @@
 #define NUMMBER_OF_DIFFERENT_TILSE 10 
 #define TILE_SIZE 32 
 
-#define VISIBLE_WINDOW_Y 15
+#define VISIBLE_WINDOW_Y 15 // * tile_size (v)
+#define VISIBLE_WINDOW_X 20
 
 
 typedef struct {
+    int TILE_SIZE_W,TILE_SIZE_H;
     char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X];
     SDL_Texture *pTileShet;
     SDL_Rect tileIndex[NUMMBER_OF_DIFFERENT_TILSE];//sprits
@@ -36,6 +38,7 @@ typedef struct {
 
 Map *createMap(SDL_Renderer *pRenderre);
 void renderMap(SDL_Renderer *pRenderer, Map *pMap);
+void updatCurentMap(Map *pMap);
 
 
 void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X],char fileName[],char newRom[]);

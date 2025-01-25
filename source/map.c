@@ -41,7 +41,6 @@ void renderMap(SDL_Renderer *pRenderer, Map *pMap){
         }
         
     }
-    
 }
 
 void trimWhitespace(char *str) {// Ta bort extra whitespace
@@ -80,12 +79,16 @@ Map *createMap(SDL_Renderer *pRenderre){
     strcpy(pMap->tileRulseFile,"resourses/tileRules.txt");
     strcpy(pMap->curentRoom,"start");
     stpcpy(pMap->mapFile,"resourses/mapFile.txt");
+
+    pMap->TILE_SIZE_H = TILE_SIZE;
+    pMap->TILE_SIZE_W = TILE_SIZE;
+
     for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
         for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
-            pMap->tileRect[y][x].w = TILE_SIZE;
-            pMap->tileRect[y][x].h = TILE_SIZE;
-            pMap->tileRect[y][x].x = (x * TILE_SIZE);
-            pMap->tileRect[y][x].y = (y * TILE_SIZE);
+            pMap->tileRect[y][x].w = pMap->TILE_SIZE_W;
+            pMap->tileRect[y][x].h = pMap->TILE_SIZE_H;     
+            pMap->tileRect[y][x].x = (x * pMap->TILE_SIZE_W);
+            pMap->tileRect[y][x].y = (y * pMap->TILE_SIZE_H);
         }
     }
     redeFileForMap(pMap->tileMap,pMap->mapFile,pMap->curentRoom);
@@ -109,6 +112,16 @@ Map *createMap(SDL_Renderer *pRenderre){
     pMap->tileIndex[6] = (SDL_Rect){127,165,16,16}; //wall/turn (rhigt -> dowen)
     pMap->tileIndex[7] = (SDL_Rect){81,150,16,16}; //wall side (left)(neds Ex)
 
-
     return pMap;
+}
+
+void updatCurentMap(Map *pMap){
+    for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
+        for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
+            pMap->tileRect[y][x].w = pMap->TILE_SIZE_W;
+            pMap->tileRect[y][x].h = pMap->TILE_SIZE_H;     
+            pMap->tileRect[y][x].x = (x * pMap->TILE_SIZE_W);
+            pMap->tileRect[y][x].y = (y * pMap->TILE_SIZE_H);
+        }
+    }
 }
