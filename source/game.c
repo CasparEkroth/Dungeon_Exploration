@@ -46,10 +46,10 @@ void input(Game *pGame, SDL_Event event){
 
     if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
 
-    if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / 4); 
-    if(pGame->pControls->keys[SDL_SCANCODE_RIGHT])  pGame->pCamera->Ofset.x -= (pGame->pMap->TILE_SIZE_W / 4); 
-    if(pGame->pControls->keys[SDL_SCANCODE_UP])  pGame->pCamera->Ofset.y += (pGame->pMap->TILE_SIZE_H / 4); 
-    if(pGame->pControls->keys[SDL_SCANCODE_DOWN])  pGame->pCamera->Ofset.y -= (pGame->pMap->TILE_SIZE_H / 4); 
+    if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
+    if(pGame->pControls->keys[SDL_SCANCODE_RIGHT])  pGame->pCamera->Ofset.x -= (pGame->pMap->TILE_SIZE_W / SLOWNES); 
+    if(pGame->pControls->keys[SDL_SCANCODE_UP])  pGame->pCamera->Ofset.y += (pGame->pMap->TILE_SIZE_H / SLOWNES); 
+    if(pGame->pControls->keys[SDL_SCANCODE_DOWN])  pGame->pCamera->Ofset.y -= (pGame->pMap->TILE_SIZE_H / SLOWNES); 
     
     if(pGame->pControls->keys[SDL_SCANCODE_P]){
         if(pGame->pControls->deltaTimeResize <= 2000) return;

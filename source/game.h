@@ -6,6 +6,8 @@
 #define STARTING_WINDOW_WIDTH (TILE_SIZE*20)
 #define STARTING_WINDOW_HEIGHT (TILE_SIZE*15)
 
+#define SLOWNES 15
+
 typedef struct {
     Uint32 currentTime;
     Uint32 previousTime;
