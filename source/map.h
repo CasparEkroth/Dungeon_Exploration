@@ -1,4 +1,3 @@
-//kart in läsning kommmer att ske via filer 
 #ifndef MAP_H
 #define MAP_H
 #include <SDL.h>
