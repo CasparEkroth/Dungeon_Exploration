@@ -103,10 +103,9 @@ ScreenAndInput* initialize_input(void){
 void updateTileSize(Game *pGame){ 
     int width, height;
     SDL_GetWindowSize(pGame->pWindow, &width, &height);
-    int tmp = 0, tmp1 = 0;
-    tmp = width/VISIBLE_WINDOW_X;
+    int tmp = width/VISIBLE_WINDOW_X;
     pGame->pMap->TILE_SIZE_W = tmp;
-    tmp1 = height/VISIBLE_WINDOW_Y;
+    int tmp1 = height/VISIBLE_WINDOW_Y;
     pGame->pMap->TILE_SIZE_H = tmp1;
     updatCurentMap(pGame->pMap);
 }
