@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 #include "player.h"
-#include "map.h"
 
 #define STARTING_WINDOW_WIDTH (TILE_SIZE*20)
 #define STARTING_WINDOW_HEIGHT (TILE_SIZE*15)
