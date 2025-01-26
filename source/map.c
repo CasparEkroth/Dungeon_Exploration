@@ -56,7 +56,7 @@ void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X], char f
     char buffer[256];
     FILE *fp = fopen(fileName, "r");
     if (fp == NULL) {
-        printf("Error: Clude not open %s!\n",fileName);
+        fprintf(stderr,"Error: Clude not open %s!\n",fileName);
         return;
     }
     while (fgets(buffer, sizeof(buffer), fp)) {
@@ -71,7 +71,7 @@ void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X], char f
         }
     }
     fclose(fp);
-    printMap(tileMap);
+    //printMap(tileMap);
 }
 
 Map *createMap(SDL_Renderer *pRenderre){
