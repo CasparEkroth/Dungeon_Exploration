@@ -9,15 +9,22 @@
 #include <stdio.h>
 
 #define NR_OF_SPRITS 20
+#define NR_OF_ITEMS 10
+#define NAME 40
 
 typedef struct {
-    // får komma på ett bra sett att strukturera detta 
+    int idNummber;
+}Items;
+
+typedef struct {
+    Items *pItems[NR_OF_ITEMS]; 
+    SDL_Rect itemRect[NR_OF_ITEMS];
 }Inventory;
 
-
-
 typedef struct{
-    //Inventory *pInvetory;
+    char playerName[NAME];
+    int totolExp, level;
+    Inventory *pInvetory;
     SDL_Rect rect;
     SDL_Rect sprits[NR_OF_SPRITS];
     int indexOfSprits;
@@ -25,6 +32,10 @@ typedef struct{
     
 }Player;
 
+Player* CreatePlayer(char playerName[NAME]);
+
+void lodePlayer(Player *pPlayer,char playerName[NAME]);
+void getPlayerName(char playerName[NAME]);
 
 
 #endif
