@@ -50,7 +50,6 @@ void lodePlayer(Player *pPlayer,char playerName[NAME]){
     fclose(fp);
 }
 
-
 void getPlayerName(char playerName[NAME]){
     //kskriver till terminalen eller fixar ett intefase där man kan skriva 
 }
