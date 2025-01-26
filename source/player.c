@@ -3,6 +3,7 @@
 Player* CreatePlayer(char playerName[NAME]){
     Player *pPlayer = malloc(sizeof(Player));
     lodePlayer(pPlayer,playerName);
+    return pPlayer;
 }
 
 void lodePlayer(Player *pPlayer,char playerName[NAME]){
