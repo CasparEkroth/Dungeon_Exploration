@@ -34,7 +34,7 @@ void lodePlayer(Player *pPlayer,char playerName[NAME]){
         return;
     }
     while (fgets(buffer, sizeof(buffer), fp)){
-        //trimWhitespace(buffer); 
+        trimWhitespace(buffer);                       
         if (strcmp(buffer, playerName) == 0) {
             fscanf(fp," %d\n",&pPlayer->totolExp);
             fscanf(fp," %d\n",&pPlayer->pInvetory->nummberOfItems);
