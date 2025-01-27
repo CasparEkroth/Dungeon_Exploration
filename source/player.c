@@ -8,6 +8,7 @@ Player* CreatePlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h
     pPlayer->rect.x = window_w/2;
     pPlayer->rect.y = window_h/2;
     pPlayer->indexOfSprits = 0;
+    pPlayer->pInvetory->open = false;
     SDL_Surface *tmpPlayer = IMG_Load("!"); // hitta en fil som funkar 
     if(!tmpPlayer){
         fprintf(stderr,"Error loding surface for player shet, %s\n",IMG_GetError());
@@ -52,4 +53,12 @@ void lodePlayer(Player *pPlayer,char playerName[NAME]){
 
 void getPlayerName(char playerName[NAME]){
     //kskriver till terminalen eller fixar ett intefase där man kan skriva 
+    // detta kommer vi göra i menyn 
+}
+
+void showInventory(Player *pPlayer){
+    //fix ett sätt att komma åt 
+    //samt att se föredragds vid 
+    //esc == för att ta ner invetory
+    //mussstyrt hantering 
 }

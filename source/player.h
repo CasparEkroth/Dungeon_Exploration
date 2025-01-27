@@ -12,11 +12,12 @@
 
 
 typedef struct {
-    int idNummber;
+    int idNummber; //kommer begöva komma på en struktur för id
     SDL_Rect itemRect;
 }Items;
 
 typedef struct {
+    bool open;
     int nummberOfItems;
     Items *pItems[NR_OF_ITEMS]; 
 }Inventory;
