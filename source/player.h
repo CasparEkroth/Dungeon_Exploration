@@ -28,14 +28,16 @@ typedef struct{
     Inventory *pInvetory;
     SDL_Rect rect;
     SDL_Rect sprits[NR_OF_SPRITS];
-    int indexOfSprits;
+    int indexOfSprits,deltaTime;
     SDL_Texture *pSprit_shet; // nedd to finde 
 }Player;
 
 Player* CreatePlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h, int window_w);
+void rednerPlayer(SDL_Renderer *pRenderer, Player *pPlayer, SDL_Point Ofset);
 
 void lodePlayer(Player *pPlayer,char playerName[NAME]);
 void getPlayerName(char playerName[NAME]);
+void showInventory(Player *pPlayer);
 
 
 #endif

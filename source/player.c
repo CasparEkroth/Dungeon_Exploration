@@ -51,12 +51,18 @@ void lodePlayer(Player *pPlayer,char playerName[NAME]){
     fclose(fp);
 }
 
-void getPlayerName(char playerName[NAME]){
+void rednerPlayer(SDL_Renderer *pRenderer, Player *pPlayer, SDL_Point Ofset){
+    //gör begränsningar genomm delta time 
+}
+
+
+
+void getPlayerName(char playerName[NAME]){ //kommer senare 
     //kskriver till terminalen eller fixar ett intefase där man kan skriva 
     // detta kommer vi göra i menyn 
 }
 
-void showInventory(Player *pPlayer){
+void showInventory(Player *pPlayer){ // inte prio
     //fix ett sätt att komma åt 
     //samt att se föredragds vid 
     //esc == för att ta ner invetory
