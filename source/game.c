@@ -42,8 +42,10 @@ void input(Game *pGame, SDL_Event event){
         default:
             break;
         }
-    }
+    }        
+    //if(pGame->pPlayer->pInvetory->open){
 
+   // }
     if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
 
     if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
@@ -145,6 +147,13 @@ void updateTileSize(Game *pGame){
 }
 
 void closeGame(Game *pGame){
+    if(pGame->pPlayer){
+        for (int i = 0; i < MAX_ITEMS; i++){
+            free(pGame->pPlayer->pInventory->pItems[i]);
+        }
+        free(pGame->pPlayer->pInventory);
+        free(pGame->pPlayer);
+    }
     if(pGame->pMap){
         if(pGame->pMap->pTileShet) SDL_DestroyTexture(pGame->pMap->pTileShet);
         free(pGame->pMap);

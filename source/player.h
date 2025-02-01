@@ -4,7 +4,7 @@
 
 
 #define NR_OF_SPRITS 20
-#define NR_OF_ITEMS 10
+#define MAX_ITEMS 10
 #define NAME 40
 #define PLAYER_HEIGHT 64
 #define PLAYER_WIDTH 32
@@ -14,30 +14,32 @@
 typedef struct {
     int idNummber; //kommer begöva komma på en struktur för id
     SDL_Rect itemRect;
-}Items;
+}Item;
 
 typedef struct {
     bool open;
     int nummberOfItems;
-    Items *pItems[NR_OF_ITEMS]; 
+    Item *pItems[MAX_ITEMS]; 
 }Inventory;
 
 typedef struct{
     char playerName[NAME];
     int totolExp, level;
-    Inventory *pInvetory;
+    Inventory *pInventory;
     SDL_Rect rect;
     SDL_Rect sprits[NR_OF_SPRITS];
     int indexOfSprits,deltaTime;
-    SDL_Texture *pSprit_shet; // nedd to finde 
+    //SDL_Texture *pSprit_shet; // nedd to finde 
 }Player;
 
-Player* CreatePlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h, int window_w);
+Player* createPlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h, int window_w);
 void rednerPlayer(SDL_Renderer *pRenderer, Player *pPlayer, SDL_Point Ofset);
 
 void lodePlayer(Player *pPlayer,char playerName[NAME]);
 void getPlayerName(char playerName[NAME]);
 void showInventory(Player *pPlayer);
+
+void printPlayer(Player *pPlayer);
 
 
 #endif

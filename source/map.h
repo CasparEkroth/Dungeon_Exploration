@@ -32,7 +32,6 @@ typedef struct {
 
 typedef struct {
     TTF_Font *font;
-
 }Menu;
 
 Map *createMap(SDL_Renderer *pRenderre);

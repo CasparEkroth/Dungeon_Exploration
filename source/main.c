@@ -17,4 +17,6 @@ void initGame(Game *g){
     g->pControls = initialize_input(); // ksk lägga dsesa i samma funktion 
     g->pCamera = initialize_camera();
     g->pMap = createMap(g->pRenderer);
+    g->pPlayer = createPlayer(g->pRenderer,"Caspar",VISIBLE_WINDOW_Y*TILE_SIZE,VISIBLE_WINDOW_X*TILE_SIZE);
+    printPlayer(g->pPlayer);
 }

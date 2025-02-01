@@ -20,13 +20,13 @@ typedef struct {
 
 
 typedef struct {
+    Player *pPlayer;
     Camera *pCamera;
     ScreenAndInput *pControls;
     bool game_is_running;
     SDL_Renderer *pRenderer;
     SDL_Window *pWindow;
     Map *pMap;
-    //Player
     //Enemy
 }Game;
 
