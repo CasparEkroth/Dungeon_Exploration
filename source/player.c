@@ -40,7 +40,14 @@ Player* createPlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h
         fprintf(stderr,"Error creating textrur for player, %s\n",IMG_GetError());
         return NULL;
     }
-    pPlayer->sprits[0] = (SDL_Rect){0,0,0,0}; //ex
+    // kommer behöva en inverterad bil för att få player att kunna vända 
+    // sig åt vänster 
+    pPlayer->sprits[0] = (SDL_Rect){300,160,32,64}; //idel fornt 
+    pPlayer->sprits[1] = (SDL_Rect){430,160,32,64}; //idel back
+    pPlayer->sprits[2] = (SDL_Rect){170,160,32,64}; //idel rhigt
+    pPlayer->sprits[3] = (SDL_Rect){0,0,0,0}; //
+    pPlayer->sprits[4] = (SDL_Rect){0,0,0,0}; //ex
+    pPlayer->sprits[5] = (SDL_Rect){0,0,0,0}; //ex
 
     return pPlayer;
 }
@@ -74,6 +81,7 @@ void lodePlayer(Player *pPlayer,char playerName[NAME]){
 
 void rednerPlayer(SDL_Renderer *pRenderer, Player *pPlayer, SDL_Point Ofset){
     //gör begränsningar genomm delta time 
+    SDL_RenderCopy(pRenderer,pPlayer->pSprit_shet,&pPlayer->sprits[0],&pPlayer->rect);
 }
 
 
@@ -98,4 +106,11 @@ void printPlayer(Player *pPlayer){
     for (int i = 0; i < pPlayer->pInventory->nummberOfItems; i++){
         printf("item %d = id: %d\n",i,pPlayer->pInventory->pItems[i]->idNummber);
     }
+}
+
+void updatePlayerSize(Player *pPlayer, Map *pMap, SDL_Point curentPos){
+    pPlayer->rect.h = (2* pMap->TILE_SIZE_H);
+    pPlayer->rect.w = (pMap->TILE_SIZE_W);
+    pPlayer->rect.x = curentPos.x;
+    pPlayer->rect.y = curentPos.y;
 }

@@ -34,6 +34,8 @@ typedef struct{
 
 Player* createPlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h, int window_w);
 void rednerPlayer(SDL_Renderer *pRenderer, Player *pPlayer, SDL_Point Ofset);
+void updatePlayerSize(Player *pPlayer, Map *pMap, SDL_Point curentPos);
+
 
 void lodePlayer(Player *pPlayer,char playerName[NAME]);
 void getPlayerName(char playerName[NAME]);

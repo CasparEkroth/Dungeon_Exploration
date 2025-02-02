@@ -21,6 +21,8 @@ void update(Game *pGame){
 void render(Game *pGame){
     SDL_RenderClear(pGame->pRenderer);
     renderMap(pGame->pRenderer,pGame->pMap);
+    rednerPlayer(pGame->pRenderer,pGame->pPlayer,pGame->pCamera->Ofset);
+
     SDL_RenderPresent(pGame->pRenderer);
 }
 
@@ -144,6 +146,7 @@ void updateTileSize(Game *pGame){
     //also updeting camer pos 
     pGame->pCamera->curentPos.x = width/2;
     pGame->pCamera->curentPos.y = height/2;
+    updatePlayerSize(pGame->pPlayer,pGame->pMap,pGame->pCamera->curentPos);
 }
 
 void closeGame(Game *pGame){
