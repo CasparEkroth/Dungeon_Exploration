@@ -29,7 +29,7 @@ typedef struct{
     SDL_Rect rect;
     SDL_Rect sprits[NR_OF_SPRITS];
     int indexOfSprits,deltaTime;
-    //SDL_Texture *pSprit_shet; // nedd to finde 
+    SDL_Texture *pSprit_shet; // nedd to finde 
 }Player;
 
 Player* createPlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h, int window_w);

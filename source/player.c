@@ -29,7 +29,7 @@ Player* createPlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h
     pPlayer->rect.y = window_h/2;
     pPlayer->indexOfSprits = 0;
     pPlayer->pInventory->open = false;
-    /*SDL_Surface *tmpPlayer = IMG_Load("!"); // hitta en fil som funkar 
+    SDL_Surface *tmpPlayer = IMG_Load("resourses/Player_shet.png"); // hitta en fil som funkar 
     if(!tmpPlayer){
         fprintf(stderr,"Error loding surface for player shet, %s\n",IMG_GetError());
         return NULL;
@@ -39,7 +39,7 @@ Player* createPlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h
     if(!pPlayer->pSprit_shet){
         fprintf(stderr,"Error creating textrur for player, %s\n",IMG_GetError());
         return NULL;
-    }*/
+    }
     pPlayer->sprits[0] = (SDL_Rect){0,0,0,0}; //ex
 
     return pPlayer;

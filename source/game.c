@@ -148,6 +148,7 @@ void updateTileSize(Game *pGame){
 
 void closeGame(Game *pGame){
     if(pGame->pPlayer){
+        if(pGame->pPlayer->pSprit_shet) SDL_DestroyTexture(pGame->pPlayer->pSprit_shet);
         for (int i = 0; i < MAX_ITEMS; i++){
             free(pGame->pPlayer->pInventory->pItems[i]);
         }
