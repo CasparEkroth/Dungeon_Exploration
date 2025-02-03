@@ -31,6 +31,8 @@ void render(Game *pGame){
 
 void input(Game *pGame, SDL_Event event){
     //SDL_ShowCursor(SDL_DISABLE);
+    pGame->pCamera->Ofset.x = 0;
+    pGame->pCamera->Ofset.y = 0;
     pGame->pControls->deltaTimeResize += pGame->pControls->currentTime - pGame->pControls->previousTime;
     while (SDL_PollEvent(&event)){
         switch (event.type)
@@ -82,8 +84,7 @@ void worldUpdate(Game *pGame){ // shifting the map
     }
     pGame->pCamera->curentPos.x += pGame->pCamera->Ofset.x;
     pGame->pCamera->curentPos.y += pGame->pCamera->Ofset.y;
-    pGame->pCamera->Ofset.x = 0;
-    pGame->pCamera->Ofset.y = 0;
+
 }
 
 

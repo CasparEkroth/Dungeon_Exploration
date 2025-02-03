@@ -29,6 +29,7 @@ Player* createPlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h
     pPlayer->rect.y = window_h/2;
     pPlayer->indexOfSprits = 0;
     pPlayer->pInventory->open = false;
+    pPlayer->deltaTime = 0;
     SDL_Surface *tmpPlayer = IMG_Load("resourses/Player_shet.png"); // hitta en fil som funkar 
     if(!tmpPlayer){
         fprintf(stderr,"Error loding surface for player shet, %s\n",IMG_GetError());
@@ -43,11 +44,25 @@ Player* createPlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h
     // kommer behöva en inverterad bil för att få player att kunna vända 
     // sig åt vänster 
     pPlayer->sprits[0] = (SDL_Rect){300,160,32,64}; //idel fornt 
-    pPlayer->sprits[1] = (SDL_Rect){430,160,32,64}; //idel back
-    pPlayer->sprits[2] = (SDL_Rect){170,160,32,64}; //idel rhigt
-    pPlayer->sprits[3] = (SDL_Rect){45,280,32,64}; // gå rhigt 1
-    pPlayer->sprits[4] = (SDL_Rect){0,0,0,0}; //ex
-    pPlayer->sprits[5] = (SDL_Rect){0,0,0,0}; //ex
+    pPlayer->sprits[1] = (SDL_Rect){170,280,32,64}; // gå fram 1
+    pPlayer->sprits[2] = (SDL_Rect){170,530,32,64}; //gå fram 2
+    pPlayer->sprits[3] = (SDL_Rect){170,780,32,64}; //gå fram 3
+    pPlayer->sprits[4] = (SDL_Rect){170,1020,32,64}; //gå fram 4
+    pPlayer->sprits[5] = (SDL_Rect){170,1270,32,64}; //gå fram 5
+
+    pPlayer->sprits[6] = (SDL_Rect){430,160,32,64}; //idel back
+    pPlayer->sprits[7] = (SDL_Rect){300,280,32,64}; //gå back 1
+    pPlayer->sprits[8] = (SDL_Rect){300,530,32,64}; //gå back 2
+    pPlayer->sprits[9] = (SDL_Rect){300,780,32,64}; //gå back 3
+    pPlayer->sprits[10] = (SDL_Rect){300,1020,32,64}; //gå back 4
+    pPlayer->sprits[11] = (SDL_Rect){300,1270,32,64}; //gå back 5
+
+    pPlayer->sprits[12] = (SDL_Rect){170,160,32,64}; //idel rhigt
+    pPlayer->sprits[13] = (SDL_Rect){45,280,32,64}; // gå rhigt 1
+    pPlayer->sprits[14] = (SDL_Rect){45,530,32,64}; //gå rhigt 2
+    pPlayer->sprits[15] = (SDL_Rect){45,780,32,64}; //gå rhigt 3
+    pPlayer->sprits[16] = (SDL_Rect){45,1020,32,64}; //gå rhigt 4
+    pPlayer->sprits[17] = (SDL_Rect){45,1270,32,64}; //gå rhigt 5
 
     return pPlayer;
 }
@@ -81,7 +96,33 @@ void lodePlayer(Player *pPlayer,char playerName[NAME]){
 
 void rednerPlayer(SDL_Renderer *pRenderer, Player *pPlayer, SDL_Point Ofset){
     //gör begränsningar genomm delta time 
-    SDL_RenderCopy(pRenderer,pPlayer->pSprit_shet,&pPlayer->sprits[0],&pPlayer->rect);
+    int delay = 100;
+    if(pPlayer->deltaTime>= delay){
+        if(Ofset.y<0){ // upp
+            pPlayer->indexOfSprits++;
+            if(pPlayer->indexOfSprits>=6){
+                pPlayer->indexOfSprits = 1; 
+            }
+        }else if (Ofset.y>0){ // down
+            pPlayer->indexOfSprits++;
+            if(pPlayer->indexOfSprits>=12){
+                pPlayer->indexOfSprits = 7; 
+            }
+        }
+        if(Ofset.x<0){ //rhigt 
+            pPlayer->indexOfSprits++;
+            if(pPlayer->indexOfSprits>=18){
+                pPlayer->indexOfSprits = 13; 
+            }
+        }else if(Ofset.x>0){ //left (is coming)
+            pPlayer->indexOfSprits++;
+            if(pPlayer->indexOfSprits>=6){
+                pPlayer->indexOfSprits = 1; 
+            }
+        }
+        pPlayer->deltaTime = 0;
+    }
+    SDL_RenderCopy(pRenderer,pPlayer->pSprit_shet,&pPlayer->sprits[pPlayer->indexOfSprits],&pPlayer->rect);
 }
 
 
