@@ -15,6 +15,7 @@ void gameRun(Game *pGame,SDL_Event event){
 }
 
 void update(Game *pGame){
+    pGame->pPlayer->deltaTime += pGame->pControls->currentTime - pGame->pControls->previousTime;
     worldUpdate(pGame);
 }
 
@@ -79,7 +80,6 @@ void worldUpdate(Game *pGame){ // shifting the map
             pGame->pMap->tileRect[y][x].y += pGame->pCamera->Ofset.y;
         }
     }
-    
     pGame->pCamera->curentPos.x += pGame->pCamera->Ofset.x;
     pGame->pCamera->curentPos.y += pGame->pCamera->Ofset.y;
     pGame->pCamera->Ofset.x = 0;

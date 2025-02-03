@@ -45,7 +45,7 @@ Player* createPlayer(SDL_Renderer *pRederere,char playerName[NAME], int window_h
     pPlayer->sprits[0] = (SDL_Rect){300,160,32,64}; //idel fornt 
     pPlayer->sprits[1] = (SDL_Rect){430,160,32,64}; //idel back
     pPlayer->sprits[2] = (SDL_Rect){170,160,32,64}; //idel rhigt
-    pPlayer->sprits[3] = (SDL_Rect){0,0,0,0}; //
+    pPlayer->sprits[3] = (SDL_Rect){45,280,32,64}; // gå rhigt 1
     pPlayer->sprits[4] = (SDL_Rect){0,0,0,0}; //ex
     pPlayer->sprits[5] = (SDL_Rect){0,0,0,0}; //ex
 
