@@ -128,6 +128,10 @@ int initialize_window(Game *pGame){ // Initialiserar SDL och skapar fönster
 
 ScreenAndInput* initialize_input(void){
     ScreenAndInput* pScreenAndInput = malloc(sizeof(ScreenAndInput));
+        if(!pScreenAndInput){
+        fprintf(stderr,"Memory allocation failed for ScreenAndInput\n");
+        return NULL;
+    }
     pScreenAndInput->currentTime = 0;
     pScreenAndInput->previousTime = 0;
     pScreenAndInput->deltaTimeResize = 0;
@@ -136,12 +140,37 @@ ScreenAndInput* initialize_input(void){
 
 Camera *initialize_camera(void){
     Camera* pCamera = malloc(sizeof(Camera));
+        if(!pCamera){
+        fprintf(stderr,"Memory allocation failed for Camera\n");
+        return NULL;
+    }
     pCamera->Ofset.x = 0;
     pCamera->Ofset.y = 0;
     pCamera->curentPos.x = STARTING_WINDOW_WIDTH/2;
     pCamera->curentPos.y = STARTING_WINDOW_HEIGHT/2;
     return pCamera;
 }
+
+Menu* initialize_Menu(void){
+    Menu* pMenu = malloc(sizeof(Menu));
+    if(!pMenu){
+        fprintf(stderr,"Memory allocation failed for Menu\n");
+        return NULL;
+    }
+    pMenu->leter = 0;
+    char empty = {0};
+    strcpy(pMenu->playerName,empty);
+    for (int i = 0; i < NUMMBER_OF_MENU_OPTIONS; i++){
+        pMenu->rect[i] = (SDL_Rect){0,0,0,0};   //fixar sen 
+    }
+    pMenu->pFont = TTF_OpenFont("resourses/RubikMaps-Regular.ttf",24);
+        if(!pMenu->pFont){
+        fprintf(stderr,"Error: Loding font: %s\n", TTF_GetError());
+        return false;
+    }
+    return pMenu;
+}
+
 
 void updateTileSize(Game *pGame){ 
     int width, height;
