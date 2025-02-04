@@ -15,17 +15,24 @@ void gameRun(Game *pGame,SDL_Event event){
 }
 
 void update(Game *pGame){
+    pGame->pPlayer->deltaTime += pGame->pControls->currentTime - pGame->pControls->previousTime;
     worldUpdate(pGame);
 }
 
 void render(Game *pGame){
     SDL_RenderClear(pGame->pRenderer);
     renderMap(pGame->pRenderer,pGame->pMap);
+    rednerPlayer(pGame->pRenderer,pGame->pPlayer,pGame->pCamera->Ofset);
+    if(pGame->pPlayer->pInventory->open){
+        //render invetory
+    }
     SDL_RenderPresent(pGame->pRenderer);
 }
 
 void input(Game *pGame, SDL_Event event){
     //SDL_ShowCursor(SDL_DISABLE);
+    pGame->pCamera->Ofset.x = 0;
+    pGame->pCamera->Ofset.y = 0;
     pGame->pControls->deltaTimeResize += pGame->pControls->currentTime - pGame->pControls->previousTime;
     while (SDL_PollEvent(&event)){
         switch (event.type)
@@ -42,15 +49,22 @@ void input(Game *pGame, SDL_Event event){
         default:
             break;
         }
+    }        
+    if(pGame->pPlayer->pInventory->open){
+        //intput för inventory
+
+    }else{
+        if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
+        if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
+        if(pGame->pControls->keys[SDL_SCANCODE_RIGHT])  pGame->pCamera->Ofset.x -= (pGame->pMap->TILE_SIZE_W / SLOWNES); 
+        if(pGame->pControls->keys[SDL_SCANCODE_UP])  pGame->pCamera->Ofset.y += (pGame->pMap->TILE_SIZE_H / SLOWNES); 
+        if(pGame->pControls->keys[SDL_SCANCODE_DOWN])  pGame->pCamera->Ofset.y -= (pGame->pMap->TILE_SIZE_H / SLOWNES); 
+        
+        if(pGame->pCamera->Ofset.x != 0 && pGame->pCamera->Ofset.y != 0){
+            pGame->pCamera->Ofset.x = (pGame->pCamera->Ofset.x/1.7);
+            pGame->pCamera->Ofset.y = (pGame->pCamera->Ofset.y/1.7);
+        }
     }
-
-    if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
-
-    if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
-    if(pGame->pControls->keys[SDL_SCANCODE_RIGHT])  pGame->pCamera->Ofset.x -= (pGame->pMap->TILE_SIZE_W / SLOWNES); 
-    if(pGame->pControls->keys[SDL_SCANCODE_UP])  pGame->pCamera->Ofset.y += (pGame->pMap->TILE_SIZE_H / SLOWNES); 
-    if(pGame->pControls->keys[SDL_SCANCODE_DOWN])  pGame->pCamera->Ofset.y -= (pGame->pMap->TILE_SIZE_H / SLOWNES); 
-    
     if(pGame->pControls->keys[SDL_SCANCODE_P]){
         if(pGame->pControls->deltaTimeResize <= 2000) return;
         if (SDL_GetWindowFlags(pGame->pWindow) & SDL_WINDOW_FULLSCREEN){
@@ -71,11 +85,9 @@ void worldUpdate(Game *pGame){ // shifting the map
             pGame->pMap->tileRect[y][x].y += pGame->pCamera->Ofset.y;
         }
     }
-    
     pGame->pCamera->curentPos.x += pGame->pCamera->Ofset.x;
     pGame->pCamera->curentPos.y += pGame->pCamera->Ofset.y;
-    pGame->pCamera->Ofset.x = 0;
-    pGame->pCamera->Ofset.y = 0;
+
 }
 
 
@@ -142,9 +154,18 @@ void updateTileSize(Game *pGame){
     //also updeting camer pos 
     pGame->pCamera->curentPos.x = width/2;
     pGame->pCamera->curentPos.y = height/2;
+    updatePlayerSize(pGame->pPlayer,pGame->pMap,pGame->pCamera->curentPos);
 }
 
 void closeGame(Game *pGame){
+    if(pGame->pPlayer){
+        if(pGame->pPlayer->pSprit_shet) SDL_DestroyTexture(pGame->pPlayer->pSprit_shet);
+        for (int i = 0; i < MAX_ITEMS; i++){
+            free(pGame->pPlayer->pInventory->pItems[i]);
+        }
+        free(pGame->pPlayer->pInventory);
+        free(pGame->pPlayer);
+    }
     if(pGame->pMap){
         if(pGame->pMap->pTileShet) SDL_DestroyTexture(pGame->pMap->pTileShet);
         free(pGame->pMap);

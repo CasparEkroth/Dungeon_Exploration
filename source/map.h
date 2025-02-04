@@ -32,14 +32,13 @@ typedef struct {
 
 typedef struct {
     TTF_Font *font;
-
 }Menu;
 
 Map *createMap(SDL_Renderer *pRenderre);
 void renderMap(SDL_Renderer *pRenderer, Map *pMap);
 void updatCurentMap(Map *pMap);
 
-
+void trimWhitespace(char *str);
 void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X],char fileName[],char newRom[]);
 void printMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]);
 
