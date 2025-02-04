@@ -41,7 +41,7 @@ void input(Game *pGame, SDL_Event event){
             pGame->game_is_running = false;
             break;
         case SDL_KEYDOWN:
-            pGame->pControls->keys[event.key.keysym.scancode] = true;
+            pGame->pControls->keys[event.key.keysym.scancode] = true; //kan man göra till en funktion 
             break;
         case SDL_KEYUP:
             pGame->pControls->keys[event.key.keysym.scancode] = false;
@@ -156,6 +156,43 @@ void updateTileSize(Game *pGame){
     pGame->pCamera->curentPos.y = height/2;
     updatePlayerSize(pGame->pPlayer,pGame->pMap,pGame->pCamera->curentPos);
 }
+
+void inputForKebord(Game *pGame){
+    char A=' ';
+    if(SDL_SCANCODE_Q) A = 'Q';
+    if(SDL_SCANCODE_W) A = 'W';
+    if(SDL_SCANCODE_E) A = 'E';
+    if(SDL_SCANCODE_R) A = 'R';
+    if(SDL_SCANCODE_T) A = 'T';
+    if(SDL_SCANCODE_Y) A = 'Y';
+    if(SDL_SCANCODE_U) A = 'U';
+    if(SDL_SCANCODE_I) A = 'I';
+    if(SDL_SCANCODE_O) A = 'O';
+    if(SDL_SCANCODE_P) A = 'P';
+    if(SDL_SCANCODE_A) A = 'A';
+    if(SDL_SCANCODE_S) A = 'S';
+    if(SDL_SCANCODE_D) A = 'D';
+    if(SDL_SCANCODE_F) A = 'F';
+    if(SDL_SCANCODE_G) A = 'G';
+    if(SDL_SCANCODE_H) A = 'H';
+    if(SDL_SCANCODE_J) A = 'J';
+    if(SDL_SCANCODE_K) A = 'K';
+    if(SDL_SCANCODE_L) A = 'L';
+    if(SDL_SCANCODE_Z) A = 'Z';
+    if(SDL_SCANCODE_X) A = 'X';
+    if(SDL_SCANCODE_C) A = 'C';
+    if(SDL_SCANCODE_V) A = 'V';
+    if(SDL_SCANCODE_B) A = 'B';
+    if(SDL_SCANCODE_N) A = 'N';
+    if(SDL_SCANCODE_M) A = 'M';
+
+    if(A != ' ' && pGame->pMenu->leter < NAME){
+        pGame->pMenu->playerName[pGame->pMenu->leter] = A;
+        pGame->pMenu->leter++;
+    }
+}
+
+
 
 void closeGame(Game *pGame){
     if(pGame->pPlayer){

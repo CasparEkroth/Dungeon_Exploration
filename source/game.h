@@ -18,11 +18,17 @@ typedef struct {
     SDL_Point Ofset,curentPos;
 }Camera;
 
+typedef struct {
+    char playerName[NAME];
+    int leter;
+}Menu;
+
 
 typedef struct {
     Player *pPlayer;
     Camera *pCamera;
     ScreenAndInput *pControls;
+    Menu *pMenu;
     bool game_is_running;
     SDL_Renderer *pRenderer;
     SDL_Window *pWindow;
