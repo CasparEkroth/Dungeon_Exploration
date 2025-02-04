@@ -60,7 +60,10 @@ void input(Game *pGame, SDL_Event event){
         if(pGame->pControls->keys[SDL_SCANCODE_UP])  pGame->pCamera->Ofset.y += (pGame->pMap->TILE_SIZE_H / SLOWNES); 
         if(pGame->pControls->keys[SDL_SCANCODE_DOWN])  pGame->pCamera->Ofset.y -= (pGame->pMap->TILE_SIZE_H / SLOWNES); 
         
-        
+        if(pGame->pCamera->Ofset.x != 0 && pGame->pCamera->Ofset.y != 0){
+            pGame->pCamera->Ofset.x = (pGame->pCamera->Ofset.x/1.7);
+            pGame->pCamera->Ofset.y = (pGame->pCamera->Ofset.y/1.7);
+        }
     }
     if(pGame->pControls->keys[SDL_SCANCODE_P]){
         if(pGame->pControls->deltaTimeResize <= 2000) return;
