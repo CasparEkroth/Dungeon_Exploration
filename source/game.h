@@ -24,7 +24,7 @@ typedef struct {
     int leter;
     TTF_Font *pFont;
     SDL_Rect rect[NUMMBER_OF_MENU_OPTIONS];
-
+    bool open;
 }Menu;
 
 

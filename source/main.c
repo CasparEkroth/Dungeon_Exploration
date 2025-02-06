@@ -14,6 +14,7 @@ int main(){
 
 void initGame(Game *g){
     initialize_window(g);
+    g->pMenu = initialize_Menu();
     g->pControls = initialize_input(); // ksk lägga dsesa i samma funktion 
     g->pCamera = initialize_camera();
     g->pMap = createMap(g->pRenderer);

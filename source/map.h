@@ -30,9 +30,6 @@ typedef struct {
     char tileRulseFile[FILE_LENGTH];
 }Map;
 
-typedef struct {
-    TTF_Font *font;
-}Menu;
 
 Map *createMap(SDL_Renderer *pRenderre);
 void renderMap(SDL_Renderer *pRenderer, Map *pMap);
