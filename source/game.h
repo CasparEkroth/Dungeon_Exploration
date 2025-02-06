@@ -40,9 +40,6 @@ Camera *initialize_camera(void);
 
 void closeGame(Game *pGame);
 
-void inputForKebord(Game *pGame);
-
-
 void gameRun(Game *pGame,SDL_Event event);
 
 void input(Game *pGame, SDL_Event event);

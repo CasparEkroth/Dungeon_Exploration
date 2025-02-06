@@ -8,10 +8,7 @@ void gameRun(Game *pGame,SDL_Event event){
         update(pGame);
         render(pGame);
         pGame->pControls->previousTime = pGame->pControls->currentTime;
-        //handel input and uppdate 
     }
-    
-    
 }
 
 void update(Game *pGame){
@@ -25,6 +22,9 @@ void render(Game *pGame){
     rednerPlayer(pGame->pRenderer,pGame->pPlayer,pGame->pCamera->Ofset);
     if(pGame->pPlayer->pInventory->open){
         //render invetory
+    }
+    if(pGame->pMenu->open){
+        renderMenu(pGame->pRenderer,pGame->pMenu);
     }
     SDL_RenderPresent(pGame->pRenderer);
 }
@@ -47,7 +47,9 @@ void input(Game *pGame, SDL_Event event){
             pGame->pControls->keys[event.key.keysym.scancode] = false;
         case SDL_TEXTINPUT:
             if(pGame->pMenu->open){
-                strcpy(pGame->pMenu->stringPlayerName,event.text.text); 
+                strcat(pGame->pMenu->stringPlayerName,event.text.text); 
+                pGame->pMenu->playerName = makeStringInToSDL_Texture(pGame->pMenu->stringPlayerName,pGame->pMenu->pFont,pGame->pRenderer);
+                pGame->pMenu->leter++;
             }
             break;
         default:
@@ -58,8 +60,7 @@ void input(Game *pGame, SDL_Event event){
         //intput för inventory
 
     }else if(pGame->pMenu->open){
-        
-
+        if(pGame->pControls->keys[SDL_SCANCODE_KP_HASH]) pGame->pMenu->open = false;
     }else{
         if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
         if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
@@ -95,11 +96,6 @@ void worldUpdate(Game *pGame){ // shifting the map
     pGame->pCamera->curentPos.y += pGame->pCamera->Ofset.y;
 
 }
-
-
-
-
-
 
 int initialize_window(Game *pGame){ // Initialiserar SDL och skapar fönster
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0 || TTF_Init() != 0 || SDL_Init(SDL_INIT_AUDIO) < 0){
@@ -161,7 +157,6 @@ Camera *initialize_camera(void){
     return pCamera;
 }
 
-
 void updateTileSize(Game *pGame){ 
     int width, height;
     SDL_GetWindowSize(pGame->pWindow, &width, &height);
@@ -193,6 +188,7 @@ void closeGame(Game *pGame){
     if(pGame->pCamera) free(pGame->pCamera);
     if(pGame->pMenu){
         if(pGame->pMenu->pFont) TTF_CloseFont(pGame->pMenu->pFont);
+        if(pGame->pMenu->playerName) SDL_DestroyTexture(pGame->pMenu->playerName);
         free(pGame->pMenu);
     }
     if (pGame->pRenderer) SDL_DestroyRenderer(pGame->pRenderer);
