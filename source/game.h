@@ -20,7 +20,8 @@ typedef struct {
 }Camera;
 
 typedef struct {
-    char playerName[NAME];
+    char stringPlayerName[NAME];
+    SDL_Texture *playerName;
     int leter;
     TTF_Font *pFont;
     SDL_Rect rect[NUMMBER_OF_MENU_OPTIONS];

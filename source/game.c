@@ -47,7 +47,7 @@ void input(Game *pGame, SDL_Event event){
             pGame->pControls->keys[event.key.keysym.scancode] = false;
         case SDL_TEXTINPUT:
             if(pGame->pMenu->open){
-                strcpy(pGame->pMenu->playerName,event.text.text); 
+                strcpy(pGame->pMenu->stringPlayerName,event.text.text); 
             }
             break;
         default:
@@ -59,7 +59,7 @@ void input(Game *pGame, SDL_Event event){
 
     }else if(pGame->pMenu->open){
         
-        
+
     }else{
         if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
         if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
@@ -82,7 +82,6 @@ void input(Game *pGame, SDL_Event event){
             updateTileSize(pGame);
             pGame->pControls->deltaTimeResize = 0;
     }
-
 }
 
 void worldUpdate(Game *pGame){ // shifting the map
@@ -95,6 +94,20 @@ void worldUpdate(Game *pGame){ // shifting the map
     pGame->pCamera->curentPos.x += pGame->pCamera->Ofset.x;
     pGame->pCamera->curentPos.y += pGame->pCamera->Ofset.y;
 
+}
+
+SDL_Texture* makeStringInToSDL_Texture(char string[NAME], SDL_Rect Pos, TTF_Font *pFont,SDL_Renderer* pRendererer){
+    char stringBuff[128];
+    snprintf(stringBuff,sizeof(stringBuff),"%s",string);
+    SDL_Color color ={255,255,255,255};
+    SDL_Surface* pSolidString = TTF_RenderText_Solid(pFont,stringBuff,color);
+    SDL_Texture* pTextureString = SDL_CreateTextureFromSurface(pRendererer,pSolidString);
+    SDL_FreeSurface(pSolidString);
+    return pTextureString;
+}
+
+void renderMenu(Game *pGame){
+    //SDL_RenderCopy(pGame->pRenderer,pGame->pMenu.)
 }
 
 
@@ -166,7 +179,7 @@ Menu* initialize_Menu(void){
     }
     pMenu->leter = 0;
     char empty = {0};
-    strcpy(pMenu->playerName,&empty);
+    strcpy(pMenu->stringPlayerName,&empty);
     for (int i = 0; i < NUMMBER_OF_MENU_OPTIONS; i++){
         pMenu->rect[i] = (SDL_Rect){0,0,0,0};   //fixar sen 
     }
