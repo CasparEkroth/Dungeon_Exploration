@@ -1,12 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
-#include "player.h"
+#include "menu.h"
 
 #define STARTING_WINDOW_WIDTH (TILE_SIZE*20)
 #define STARTING_WINDOW_HEIGHT (TILE_SIZE*15)
 
 #define SLOWNES 15
-#define NUMMBER_OF_MENU_OPTIONS 8
 
 typedef struct {
     Uint32 currentTime;
@@ -18,15 +17,6 @@ typedef struct {
 typedef struct {
     SDL_Point Ofset,curentPos;
 }Camera;
-
-typedef struct {
-    char stringPlayerName[NAME];
-    SDL_Texture *playerName;
-    int leter;
-    TTF_Font *pFont;
-    SDL_Rect rect[NUMMBER_OF_MENU_OPTIONS];
-    bool open;
-}Menu;
 
 
 typedef struct {
@@ -47,7 +37,6 @@ typedef struct {
 int initialize_window(Game *pGame);
 ScreenAndInput* initialize_input(void);
 Camera *initialize_camera(void);
-Menu* initialize_Menu(void);
 
 void closeGame(Game *pGame);
 
