@@ -50,6 +50,7 @@ void input(Game *pGame, SDL_Event event){
                 strcat(pGame->pMenu->stringPlayerName,event.text.text); 
                 pGame->pMenu->playerName = makeStringInToSDL_Texture(pGame->pMenu->stringPlayerName,pGame->pMenu->pFont,pGame->pRenderer);
                 pGame->pMenu->leter++;
+                pGame->pMenu->rect[0].w = 25+(pGame->pMenu->leter*25);
             }
             break;
         default:
