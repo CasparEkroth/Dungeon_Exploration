@@ -14,13 +14,25 @@ Menu* initialize_Menu(SDL_Renderer *pRenderer){
         pMenu->rect[i] = (SDL_Rect){0,0,0,0};   //fixar sen 
     }
     pMenu->rect[0] = (SDL_Rect){50,50,500,50};
+    //pMenu->rect[1] = (SDL_Rect){};       sizeof(screne);
     pMenu->pFont = TTF_OpenFont("resourses/RubikMaps-Regular.ttf",24);
         if(!pMenu->pFont){
         fprintf(stderr,"Error: Loding font: %s\n", TTF_GetError());
         return false;
     }
-    pMenu->playerName = makeStringInToSDL_Texture("0",pMenu->pFont,pRenderer);
+    pMenu->playerName = makeStringInToSDL_Texture(" ",pMenu->pFont,pRenderer);
     pMenu->open = true;
+    /*SDL_Surface *pBack = IMG_Load(" ");
+    if(!pBack){
+        fprintf(stderr,"Error creating suface for backgrund(menu): %s",IMG_GetError());
+        return NULL;
+    }
+    pMenu->pBackTextur = SDL_CreateTextureFromSurface(pRenderer,pBack);
+    SDL_FreeSurface(pBack);
+    if(!pMenu->pBackTextur){
+        fprintf(stderr,"Error creating textur for backgrung(menu): %s",SDL_GetError());
+        return NULL;
+    }*/
     return pMenu;
 }
 

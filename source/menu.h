@@ -8,6 +8,7 @@
 typedef struct {
     char stringPlayerName[NAME];
     SDL_Texture *playerName;
+    SDL_Texture *pBackTextur;// bakrungdsbild
     int leter;
     TTF_Font *pFont;
     SDL_Rect rect[NUMMBER_OF_MENU_OPTIONS];
