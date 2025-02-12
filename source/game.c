@@ -18,14 +18,17 @@ void update(Game *pGame){
 
 void render(Game *pGame){
     SDL_RenderClear(pGame->pRenderer);
-    renderMap(pGame->pRenderer,pGame->pMap);
-    rednerPlayer(pGame->pRenderer,pGame->pPlayer,pGame->pCamera->Ofset);
-    if(pGame->pPlayer->pInventory->open){
-        //render invetory
-    }
     if(pGame->pMenu->open){
         renderMenu(pGame->pRenderer,pGame->pMenu);
+    }else{
+        renderMap(pGame->pRenderer,pGame->pMap);
+        rednerPlayer(pGame->pRenderer,pGame->pPlayer,pGame->pCamera->Ofset);
+        if(pGame->pPlayer->pInventory->open){
+        //render invetory
     }
+    }
+    
+    
     SDL_RenderPresent(pGame->pRenderer);
 }
 
@@ -165,6 +168,11 @@ void updateTileSize(Game *pGame){
     pGame->pMap->TILE_SIZE_W = tmp;
     int tmp1 = height/VISIBLE_WINDOW_Y;
     pGame->pMap->TILE_SIZE_H = tmp1;
+    //updating menu
+    pGame->pMenu->rect[1].h = height;
+    pGame->pMenu->rect[1].w = width;
+    //updating map
+
     updatCurentMap(pGame->pMap);
     //also updeting camer pos 
     pGame->pCamera->curentPos.x = width/2;
@@ -190,6 +198,7 @@ void closeGame(Game *pGame){
     if(pGame->pMenu){
         if(pGame->pMenu->pFont) TTF_CloseFont(pGame->pMenu->pFont);
         if(pGame->pMenu->playerName) SDL_DestroyTexture(pGame->pMenu->playerName);
+        if(pGame->pMenu->pBackTextur) SDL_DestroyTexture(pGame->pMenu->pBackTextur);
         free(pGame->pMenu);
     }
     if (pGame->pRenderer) SDL_DestroyRenderer(pGame->pRenderer);

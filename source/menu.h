@@ -15,7 +15,7 @@ typedef struct {
     bool open;
 }Menu;
 
-Menu* initialize_Menu(SDL_Renderer *pRenderere);
+Menu* initialize_Menu(SDL_Renderer *pRenderere, SDL_Window *pWindow);
 
 SDL_Texture* makeStringInToSDL_Texture(char string[NAME], TTF_Font *pFont,SDL_Renderer* pRendererer);
 

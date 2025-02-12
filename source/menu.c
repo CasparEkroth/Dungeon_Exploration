@@ -1,7 +1,7 @@
 #include "menu.h"
 
 
-Menu* initialize_Menu(SDL_Renderer *pRenderer){
+Menu* initialize_Menu(SDL_Renderer *pRenderer,SDL_Window *pWindow){
     Menu* pMenu = malloc(sizeof(Menu));
     if(!pMenu){
         fprintf(stderr,"Memory allocation failed for Menu\n");
@@ -14,15 +14,15 @@ Menu* initialize_Menu(SDL_Renderer *pRenderer){
         pMenu->rect[i] = (SDL_Rect){0,0,0,0};   //fixar sen 
     }
     pMenu->rect[0] = (SDL_Rect){50,50,500,50};
-    //pMenu->rect[1] = (SDL_Rect){};       sizeof(screne);
+
     pMenu->pFont = TTF_OpenFont("resourses/RubikMaps-Regular.ttf",24);
         if(!pMenu->pFont){
         fprintf(stderr,"Error: Loding font: %s\n", TTF_GetError());
         return false;
     }
-    pMenu->playerName = makeStringInToSDL_Texture(" ",pMenu->pFont,pRenderer);
+    pMenu->playerName = makeStringInToSDL_Texture("",pMenu->pFont,pRenderer);
     pMenu->open = true;
-    /*SDL_Surface *pBack = IMG_Load(" ");
+    SDL_Surface *pBack = IMG_Load("resourses/background.jpg");
     if(!pBack){
         fprintf(stderr,"Error creating suface for backgrund(menu): %s",IMG_GetError());
         return NULL;
@@ -32,7 +32,10 @@ Menu* initialize_Menu(SDL_Renderer *pRenderer){
     if(!pMenu->pBackTextur){
         fprintf(stderr,"Error creating textur for backgrung(menu): %s",SDL_GetError());
         return NULL;
-    }*/
+    }
+    int width, height;
+    SDL_GetWindowSize(pWindow, &width, &height);
+    pMenu->rect[1] =(SDL_Rect){0,0,width,height};
     return pMenu;
 }
 
@@ -47,5 +50,6 @@ SDL_Texture* makeStringInToSDL_Texture(char string[NAME], TTF_Font *pFont,SDL_Re
 }
 
 void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
+    SDL_RenderCopy(pRenderer,pMenu->pBackTextur,NULL,&pMenu->rect[1]);
     SDL_RenderCopy(pRenderer,pMenu->playerName,NULL,&pMenu->rect[0]);
 }
