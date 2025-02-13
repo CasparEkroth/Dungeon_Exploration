@@ -143,8 +143,19 @@ bool colitino(SDL_Rect A,SDL_Rect B){
         A.x <= B.x + B.w &&
         A.y + A.h >= B.y &&
         A.y <= B.y + B.h){
-            return true;
-        }else{
-            return false;
-        }
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool pointInRect(SDL_Rect A, SDL_Point P){
+    if( A.x + A.w >= P.x &&
+        P.x >= A.x &&
+        A.y + A.h >= P.y &&
+        P.x >= A.x){
+        return true;
+    }else{
+        return false;
+    }
 }
