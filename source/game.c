@@ -24,11 +24,9 @@ void render(Game *pGame){
         renderMap(pGame->pRenderer,pGame->pMap);
         rednerPlayer(pGame->pRenderer,pGame->pPlayer,pGame->pCamera->Ofset);
         if(pGame->pPlayer->pInventory->open){
-        //render invetory
+            //render invetory
+        }
     }
-    }
-    
-    
     SDL_RenderPresent(pGame->pRenderer);
 }
 
@@ -38,8 +36,7 @@ void input(Game *pGame, SDL_Event event){
     pGame->pCamera->Ofset.y = 0;
     pGame->pControls->deltaTimeResize += pGame->pControls->currentTime - pGame->pControls->previousTime;
     while (SDL_PollEvent(&event)){
-        switch (event.type)
-        {
+        switch (event.type){
         case SDL_QUIT: 
             pGame->game_is_running = false;
             break;
@@ -48,12 +45,18 @@ void input(Game *pGame, SDL_Event event){
             break;
         case SDL_KEYUP:
             pGame->pControls->keys[event.key.keysym.scancode] = false;
+            break;
         case SDL_TEXTINPUT:
-            if(pGame->pMenu->open){
+            if(pGame->pControls->keys[SDL_SCANCODE_0]) pGame->pMenu->open = false;
+            if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
+            if(pGame->pControls->keys[SDL_SCANCODE_BACKSPACE]){
+                pGame->pMenu->stringPlayerName[strlen(pGame->pMenu->stringPlayerName)-1] = ' ';
+            }
+            if(pGame->pMenu->open){//text handler 
                 strcat(pGame->pMenu->stringPlayerName,event.text.text); 
                 pGame->pMenu->playerName = makeStringInToSDL_Texture(pGame->pMenu->stringPlayerName,pGame->pMenu->pFont,pGame->pRenderer);
                 pGame->pMenu->leter++;
-                pGame->pMenu->rect[0].w = 25+(pGame->pMenu->leter*25);
+                pGame->pMenu->rect[0].w = 15+(pGame->pMenu->leter*15);
             }
             break;
         default:
@@ -64,7 +67,7 @@ void input(Game *pGame, SDL_Event event){
         //intput för inventory
 
     }else if(pGame->pMenu->open){
-        if(pGame->pControls->keys[SDL_SCANCODE_KP_HASH]) pGame->pMenu->open = false;
+        if(pGame->pControls->keys[SDL_SCANCODE_0]) pGame->pMenu->open = false;
     }else{
         if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
         if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
@@ -134,18 +137,6 @@ int initialize_window(Game *pGame){ // Initialiserar SDL och skapar fönster
         return false;
     }
     return true;
-}
-
-ScreenAndInput* initialize_input(void){
-    ScreenAndInput* pScreenAndInput = malloc(sizeof(ScreenAndInput));
-        if(!pScreenAndInput){
-        fprintf(stderr,"Memory allocation failed for ScreenAndInput\n");
-        return NULL;
-    }
-    pScreenAndInput->currentTime = 0;
-    pScreenAndInput->previousTime = 0;
-    pScreenAndInput->deltaTimeResize = 0;
-    return pScreenAndInput;
 }
 
 Camera *initialize_camera(void){

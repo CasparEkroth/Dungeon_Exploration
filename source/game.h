@@ -7,12 +7,7 @@
 
 #define SLOWNES 15
 
-typedef struct {
-    Uint32 currentTime;
-    Uint32 previousTime;
-    bool keys[SDL_NUM_SCANCODES];
-    int deltaTimeResize;
-}ScreenAndInput;
+
 
 typedef struct {
     SDL_Point Ofset,curentPos;
@@ -35,7 +30,6 @@ typedef struct {
 
 
 int initialize_window(Game *pGame);
-ScreenAndInput* initialize_input(void);
 Camera *initialize_camera(void);
 
 void closeGame(Game *pGame);

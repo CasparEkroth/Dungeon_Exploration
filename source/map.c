@@ -125,3 +125,15 @@ void updatCurentMap(Map *pMap){
         }
     }
 }
+
+ScreenAndInput* initialize_input(void){
+    ScreenAndInput* pScreenAndInput = malloc(sizeof(ScreenAndInput));
+        if(!pScreenAndInput){
+        fprintf(stderr,"Memory allocation failed for ScreenAndInput\n");
+        return NULL;
+    }
+    pScreenAndInput->currentTime = 0;
+    pScreenAndInput->previousTime = 0;
+    pScreenAndInput->deltaTimeResize = 0;
+    return pScreenAndInput;
+}

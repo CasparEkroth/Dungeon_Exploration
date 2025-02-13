@@ -1,6 +1,5 @@
 #include "menu.h"
 
-
 Menu* initialize_Menu(SDL_Renderer *pRenderer,SDL_Window *pWindow){
     Menu* pMenu = malloc(sizeof(Menu));
     if(!pMenu){
@@ -52,4 +51,15 @@ SDL_Texture* makeStringInToSDL_Texture(char string[NAME], TTF_Font *pFont,SDL_Re
 void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
     SDL_RenderCopy(pRenderer,pMenu->pBackTextur,NULL,&pMenu->rect[1]);
     SDL_RenderCopy(pRenderer,pMenu->playerName,NULL,&pMenu->rect[0]);
+}
+
+
+void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *pGame){
+    switch (event.type){
+    case SDL_QUIT: pGame = false;
+        break;
+    case 0:
+    default:
+        break;
+    }
 }
