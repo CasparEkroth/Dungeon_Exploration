@@ -55,6 +55,9 @@ void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
 
 
 void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *pGame){
+    //SDL_ShowCursor(SDL_ENABLE);
+    int mouseX, mouseY;
+    Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
     switch (event.type){
     case SDL_QUIT: pGame = false;
         break;

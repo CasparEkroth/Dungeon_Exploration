@@ -47,5 +47,7 @@ void printMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]);
 
 ScreenAndInput* initialize_input(void);
 
+bool colitino(SDL_Rect A,SDL_Rect B);
+
 
 #endif 

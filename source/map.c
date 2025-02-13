@@ -137,3 +137,14 @@ ScreenAndInput* initialize_input(void){
     pScreenAndInput->deltaTimeResize = 0;
     return pScreenAndInput;
 }
+
+bool colitino(SDL_Rect A,SDL_Rect B){
+    if(A.x + A.w >= B.x && 
+        A.x <= B.x + B.w &&
+        A.y + A.h >= B.y &&
+        A.y <= B.y + B.h){
+            return true;
+        }else{
+            return false;
+        }
+}
