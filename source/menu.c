@@ -52,7 +52,7 @@ SDL_Texture* makeStringInToSDL_Texture(char string[NAME], TTF_Font *pFont,SDL_Re
 void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
     SDL_RenderCopy(pRenderer,pMenu->pBackTextur,NULL,&pMenu->rect[1]);
     SDL_RenderCopy(pRenderer,pMenu->playerName,NULL,&pMenu->rect[0]);
-    
+
     if(pMenu->highlight_rect != 0){
         SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);  // Red
         SDL_RenderDrawRect(pRenderer, &pMenu->rect[pMenu->highlight_rect]);
@@ -73,12 +73,18 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
         pGame = false;
         break;
     case SDL_MOUSEBUTTONDOWN:
+        break;
+    case SDL_TEXTINPUT:
+        break;
     default:
         break;
     }
     for (int i = 2; i < NUMMBER_OF_MENU_OPTIONS; i++){ //starting on 2 (streng och bracrgrund)
         if(pointInRect(pMenu->rect[i],mouse)){
             pMenu->highlight_rect = i;
+            if(mouseState){
+                //kanpp input för den spesefika rutna 
+            }
             break;
         }else{
             pMenu->highlight_rect = 0;
