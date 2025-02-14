@@ -18,6 +18,9 @@
 #define VISIBLE_WINDOW_Y 15 // * tile_size (v)
 #define VISIBLE_WINDOW_X 20
 
+#define STARTING_WINDOW_WIDTH (TILE_SIZE*20)
+#define STARTING_WINDOW_HEIGHT (TILE_SIZE*15)
+
 
 typedef struct {
     int TILE_SIZE_W,TILE_SIZE_H;
@@ -31,11 +34,17 @@ typedef struct {
 }Map;
 
 typedef struct {
+    SDL_Point Ofset,curentPos;
+}Camera;
+
+typedef struct {
+    Camera *pCamera;
     Uint32 currentTime;
     Uint32 previousTime;
     bool keys[SDL_NUM_SCANCODES];
     int deltaTimeResize;
 }ScreenAndInput;
+
 
 Map *createMap(SDL_Renderer *pRenderre);
 void renderMap(SDL_Renderer *pRenderer, Map *pMap);
@@ -46,6 +55,7 @@ void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X],char fi
 void printMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]);
 
 ScreenAndInput* initialize_input(void);
+Camera *initialize_camera(void);
 
 bool colitino(SDL_Rect A,SDL_Rect B);
 bool pointInRect(SDL_Rect A, SDL_Point P);

@@ -2,7 +2,7 @@
 #define MENU_H
 #include "player.h"
 
-#define NUMMBER_OF_MENU_OPTIONS 8
+#define NUMMBER_OF_MENU_OPTIONS 10
 
 
 typedef struct {
@@ -19,9 +19,11 @@ typedef struct {
 Menu* initialize_Menu(SDL_Renderer *pRenderere, SDL_Window *pWindow);
 
 SDL_Texture* makeStringInToSDL_Texture(char string[NAME], TTF_Font *pFont,SDL_Renderer* pRendererer);
-SDL_Rect setingSizeOfStringToRect(char string[NAME],SDL_Point startingPoint);
+SDL_Rect setingSizeOfStringToRect(char string[NAME],SDL_Point startingPoint,int h,int w);
 
-void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool pGame);
+
+void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool pGame,SDL_Window *pWindow, Map *pMap);
+void updateTileSizeForMenu(SDL_Window *pWindow,Map *pMap,Menu *pMenu,Camera *pCamera);
 
 
 void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu);

@@ -22,7 +22,7 @@ void render(Game *pGame){
         renderMenu(pGame->pRenderer,pGame->pMenu);
     }else{
         renderMap(pGame->pRenderer,pGame->pMap);
-        rednerPlayer(pGame->pRenderer,pGame->pPlayer,pGame->pCamera->Ofset);
+        rednerPlayer(pGame->pRenderer,pGame->pPlayer,pGame->pControls->pCamera->Ofset);
         if(pGame->pPlayer->pInventory->open){
             //render invetory
         }
@@ -32,11 +32,11 @@ void render(Game *pGame){
 
 void input(Game *pGame, SDL_Event event){
     //SDL_ShowCursor(SDL_DISABLE);
-    pGame->pCamera->Ofset.x = 0;
-    pGame->pCamera->Ofset.y = 0;
+    pGame->pControls->pCamera->Ofset.x = 0;
+    pGame->pControls->pCamera->Ofset.y = 0;
     pGame->pControls->deltaTimeResize += pGame->pControls->currentTime - pGame->pControls->previousTime;
     if(pGame->pMenu->open){
-        inputForMenu(pGame->pMenu,event,pGame->pControls,pGame->game_is_running);
+        inputForMenu(pGame->pMenu,event,pGame->pControls,pGame->game_is_running,pGame->pWindow,pGame->pMap);
     }
     while (SDL_PollEvent(&event)){
         switch (event.type){
@@ -59,7 +59,7 @@ void input(Game *pGame, SDL_Event event){
                 strcat(pGame->pMenu->stringPlayerName,event.text.text); 
                 pGame->pMenu->playerName = makeStringInToSDL_Texture(pGame->pMenu->stringPlayerName,pGame->pMenu->pFont,pGame->pRenderer);
                 pGame->pMenu->leter++;
-                pGame->pMenu->rect[0].w = 15+(pGame->pMenu->leter*15);
+                pGame->pMenu->rect[1].w = 15+(pGame->pMenu->leter*15);
             }
             break;
         default:
@@ -73,14 +73,14 @@ void input(Game *pGame, SDL_Event event){
         if(pGame->pControls->keys[SDL_SCANCODE_0]) pGame->pMenu->open = false;
     }else{
         if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
-        if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
-        if(pGame->pControls->keys[SDL_SCANCODE_RIGHT])  pGame->pCamera->Ofset.x -= (pGame->pMap->TILE_SIZE_W / SLOWNES); 
-        if(pGame->pControls->keys[SDL_SCANCODE_UP])  pGame->pCamera->Ofset.y += (pGame->pMap->TILE_SIZE_H / SLOWNES); 
-        if(pGame->pControls->keys[SDL_SCANCODE_DOWN])  pGame->pCamera->Ofset.y -= (pGame->pMap->TILE_SIZE_H / SLOWNES); 
+        if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pControls->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
+        if(pGame->pControls->keys[SDL_SCANCODE_RIGHT])  pGame->pControls->pCamera->Ofset.x -= (pGame->pMap->TILE_SIZE_W / SLOWNES); 
+        if(pGame->pControls->keys[SDL_SCANCODE_UP])  pGame->pControls->pCamera->Ofset.y += (pGame->pMap->TILE_SIZE_H / SLOWNES); 
+        if(pGame->pControls->keys[SDL_SCANCODE_DOWN])  pGame->pControls->pCamera->Ofset.y -= (pGame->pMap->TILE_SIZE_H / SLOWNES); 
         
-        if(pGame->pCamera->Ofset.x != 0 && pGame->pCamera->Ofset.y != 0){
-            pGame->pCamera->Ofset.x = (pGame->pCamera->Ofset.x/1.7);
-            pGame->pCamera->Ofset.y = (pGame->pCamera->Ofset.y/1.7);
+        if(pGame->pControls->pCamera->Ofset.x != 0 && pGame->pControls->pCamera->Ofset.y != 0){
+            pGame->pControls->pCamera->Ofset.x = (pGame->pControls->pCamera->Ofset.x/1.7);
+            pGame->pControls->pCamera->Ofset.y = (pGame->pControls->pCamera->Ofset.y/1.7);
         }
     }
     if(pGame->pControls->keys[SDL_SCANCODE_P]){
@@ -90,7 +90,7 @@ void input(Game *pGame, SDL_Event event){
         }else{
             SDL_SetWindowFullscreen(pGame->pWindow, SDL_WINDOW_FULLSCREEN);  // Fullscreen mode
         }
-            updateTileSize(pGame);
+            updateTileSizeForMenu(pGame->pWindow,pGame->pMap,pGame->pMenu,pGame->pControls->pCamera);//temporery
             pGame->pControls->deltaTimeResize = 0;
     }
 }
@@ -98,12 +98,12 @@ void input(Game *pGame, SDL_Event event){
 void worldUpdate(Game *pGame){ // shifting the map
     for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
         for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
-            pGame->pMap->tileRect[y][x].x += pGame->pCamera->Ofset.x;
-            pGame->pMap->tileRect[y][x].y += pGame->pCamera->Ofset.y;
+            pGame->pMap->tileRect[y][x].x += pGame->pControls->pCamera->Ofset.x;
+            pGame->pMap->tileRect[y][x].y += pGame->pControls->pCamera->Ofset.y;
         }
     }
-    pGame->pCamera->curentPos.x += pGame->pCamera->Ofset.x;
-    pGame->pCamera->curentPos.y += pGame->pCamera->Ofset.y;
+    pGame->pControls->pCamera->curentPos.x += pGame->pControls->pCamera->Ofset.x;
+    pGame->pControls->pCamera->curentPos.y += pGame->pControls->pCamera->Ofset.y;
 
 }
 
@@ -132,7 +132,6 @@ int initialize_window(Game *pGame){ // Initialiserar SDL och skapar fönster
         fprintf(stderr, "Error creating SDL Window: %s\n", SDL_GetError());
         return false;
     }
-
     Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     pGame->pRenderer = SDL_CreateRenderer(pGame->pWindow, -1, render_flags);
     if (!pGame->pRenderer) {
@@ -140,38 +139,6 @@ int initialize_window(Game *pGame){ // Initialiserar SDL och skapar fönster
         return false;
     }
     return true;
-}
-
-Camera *initialize_camera(void){
-    Camera* pCamera = malloc(sizeof(Camera));
-        if(!pCamera){
-        fprintf(stderr,"Memory allocation failed for Camera\n");
-        return NULL;
-    }
-    pCamera->Ofset.x = 0;
-    pCamera->Ofset.y = 0;
-    pCamera->curentPos.x = STARTING_WINDOW_WIDTH/2;
-    pCamera->curentPos.y = STARTING_WINDOW_HEIGHT/2;
-    return pCamera;
-}
-
-void updateTileSize(Game *pGame){ 
-    int width, height;
-    SDL_GetWindowSize(pGame->pWindow, &width, &height);
-    int tmp = width/VISIBLE_WINDOW_X;
-    pGame->pMap->TILE_SIZE_W = tmp;
-    int tmp1 = height/VISIBLE_WINDOW_Y;
-    pGame->pMap->TILE_SIZE_H = tmp1;
-    //updating menu
-    pGame->pMenu->rect[1].h = height;
-    pGame->pMenu->rect[1].w = width;
-    //updating map
-
-    updatCurentMap(pGame->pMap);
-    //also updeting camer pos 
-    pGame->pCamera->curentPos.x = width/2;
-    pGame->pCamera->curentPos.y = height/2;
-    updatePlayerSize(pGame->pPlayer,pGame->pMap,pGame->pCamera->curentPos);
 }
 
 void closeGame(Game *pGame){
@@ -187,8 +154,8 @@ void closeGame(Game *pGame){
         if(pGame->pMap->pTileShet) SDL_DestroyTexture(pGame->pMap->pTileShet);
         free(pGame->pMap);
     }
+    if(pGame->pControls->pCamera) free(pGame->pControls->pCamera);
     if(pGame->pControls) free(pGame->pControls);
-    if(pGame->pCamera) free(pGame->pCamera);
     if(pGame->pMenu){
         if(pGame->pMenu->pFont) TTF_CloseFont(pGame->pMenu->pFont);
         if(pGame->pMenu->playerName) SDL_DestroyTexture(pGame->pMenu->playerName);
@@ -196,7 +163,6 @@ void closeGame(Game *pGame){
         for (int i = 0; i < NUMMBER_OF_MENU_OPTIONS-2; i++){
             if(pGame->pMenu->pMenuOptions[i]) SDL_DestroyTexture(pGame->pMenu->pMenuOptions[i]);
         }
-        
         free(pGame->pMenu);
     }
     if (pGame->pRenderer) SDL_DestroyRenderer(pGame->pRenderer);

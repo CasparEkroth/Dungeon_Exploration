@@ -137,6 +137,19 @@ ScreenAndInput* initialize_input(void){
     return pScreenAndInput;
 }
 
+Camera *initialize_camera(void){
+    Camera* pCamera = malloc(sizeof(Camera));
+        if(!pCamera){
+        fprintf(stderr,"Memory allocation failed for Camera\n");
+        return NULL;
+    }
+    pCamera->Ofset.x = 0;
+    pCamera->Ofset.y = 0;
+    pCamera->curentPos.x = STARTING_WINDOW_WIDTH/2;
+    pCamera->curentPos.y = STARTING_WINDOW_HEIGHT/2;
+    return pCamera;
+}
+
 bool colitino(SDL_Rect A,SDL_Rect B){
     if(A.x + A.w >= B.x && 
         A.x <= B.x + B.w &&
