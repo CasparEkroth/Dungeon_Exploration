@@ -35,6 +35,9 @@ void input(Game *pGame, SDL_Event event){
     pGame->pCamera->Ofset.x = 0;
     pGame->pCamera->Ofset.y = 0;
     pGame->pControls->deltaTimeResize += pGame->pControls->currentTime - pGame->pControls->previousTime;
+    if(pGame->pMenu->open){
+        inputForMenu(pGame->pMenu,event,pGame->pControls,pGame->game_is_running);
+    }
     while (SDL_PollEvent(&event)){
         switch (event.type){
         case SDL_QUIT: 

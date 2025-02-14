@@ -21,6 +21,7 @@ Menu* initialize_Menu(SDL_Renderer *pRenderere, SDL_Window *pWindow);
 SDL_Texture* makeStringInToSDL_Texture(char string[NAME], TTF_Font *pFont,SDL_Renderer* pRendererer);
 SDL_Rect setingSizeOfStringToRect(char string[NAME],SDL_Point startingPoint);
 
+void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool pGame);
 
 
 void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu);

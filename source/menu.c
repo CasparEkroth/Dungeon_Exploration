@@ -82,7 +82,6 @@ void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
     for (int i = 0; i < NUMMBER_OF_MENU_OPTIONS-2; i++){
         SDL_RenderCopy(pRenderer,pMenu->pMenuOptions[i],NULL,&pMenu->rect[i+2]);
     }
-    
     if(pMenu->highlight_rect != 0){
         SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);  // Red
         SDL_RenderDrawRect(pRenderer, &pMenu->rect[pMenu->highlight_rect]);
@@ -90,10 +89,8 @@ void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
     }
 }
 
-
-void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *pGame){
+void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool pGame){
     //SDL_ShowCursor(SDL_ENABLE);
-    int mouseX, mouseY;
     SDL_Point mouse;
     Uint32 mouseState = SDL_GetMouseState(&mouse.x, &mouse.y);
     
@@ -114,11 +111,11 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
             pMenu->highlight_rect = i;
             if(mouseState){
                 //kanpp input för den spesefika rutna 
+                pMenu->rect[i].x += TILE_SIZE; 
             }
             break;
         }else{
             pMenu->highlight_rect = 0;
         }
     }
-    
 }
