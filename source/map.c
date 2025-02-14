@@ -111,7 +111,6 @@ Map *createMap(SDL_Renderer *pRenderre){
     pMap->tileIndex[5] = (SDL_Rect){80,150,16,16}; //wall side (left)
     pMap->tileIndex[6] = (SDL_Rect){127,165,16,16}; //wall/turn (rhigt -> dowen)
     pMap->tileIndex[7] = (SDL_Rect){81,150,16,16}; //wall side (left)(neds Ex)
-
     return pMap;
 }
 

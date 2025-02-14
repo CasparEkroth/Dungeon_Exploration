@@ -190,6 +190,10 @@ void closeGame(Game *pGame){
         if(pGame->pMenu->pFont) TTF_CloseFont(pGame->pMenu->pFont);
         if(pGame->pMenu->playerName) SDL_DestroyTexture(pGame->pMenu->playerName);
         if(pGame->pMenu->pBackTextur) SDL_DestroyTexture(pGame->pMenu->pBackTextur);
+        for (int i = 0; i < NUMMBER_OF_MENU_OPTIONS-2; i++){
+            if(pGame->pMenu->pMenuOptions[i]) SDL_DestroyTexture(pGame->pMenu->pMenuOptions[i]);
+        }
+        
         free(pGame->pMenu);
     }
     if (pGame->pRenderer) SDL_DestroyRenderer(pGame->pRenderer);
