@@ -11,8 +11,8 @@ Menu* initialize_Menu(SDL_Renderer *pRenderer,SDL_Window *pWindow){
     char empty = {0};
     strcpy(pMenu->stringPlayerName,&empty);
 
-    pMenu->rect[1] = (SDL_Rect){50,50,500,50}; //koll vart de ska vara 
-
+    pMenu->rect[1] = (SDL_Rect){50,50,15,50}; //koll vart de ska vara 
+    pMenu->MenuPlasment[0] =(SDL_Point){11,11};
     pMenu->pFont = TTF_OpenFont("resourses/RubikMaps-Regular.ttf",24);
         if(!pMenu->pFont){
         fprintf(stderr,"Error: Loding font: %s\n", TTF_GetError());
@@ -20,6 +20,7 @@ Menu* initialize_Menu(SDL_Renderer *pRenderer,SDL_Window *pWindow){
     }
     pMenu->playerName = makeStringInToSDL_Texture("",pMenu->pFont,pRenderer);
     pMenu->open = true;
+    pMenu->isWriting = false;
     SDL_Surface *pBack = IMG_Load("resourses/background.jpg");
     if(!pBack){
         fprintf(stderr,"Error creating suface for backgrund(menu): %s",IMG_GetError());
@@ -36,29 +37,29 @@ Menu* initialize_Menu(SDL_Renderer *pRenderer,SDL_Window *pWindow){
     pMenu->rect[0] =(SDL_Rect){0,0,width,height};
 
     pMenu->pMenuOptions[0] = makeStringInToSDL_Texture("PLAY",pMenu->pFont,pRenderer);
-    SDL_Point A ={1,3};//x,y
-    pMenu->rect[2] = setingSizeOfStringToRect("PLAY",A,TILE_SIZE,TILE_SIZE);
+    pMenu->MenuPlasment[1] =(SDL_Point){1,11};//x,y
+    pMenu->rect[2] = setingSizeOfStringToRect("PLAY",pMenu->MenuPlasment[1],TILE_SIZE,TILE_SIZE);
     pMenu->pMenuOptions[1] = makeStringInToSDL_Texture("BACK",pMenu->pFont,pRenderer);
-    A = (SDL_Point){1,4};
-    pMenu->rect[3] = setingSizeOfStringToRect("BACK",A,TILE_SIZE,TILE_SIZE);
+    pMenu->MenuPlasment[2] = (SDL_Point){1,12};
+    pMenu->rect[3] = setingSizeOfStringToRect("BACK",pMenu->MenuPlasment[2],TILE_SIZE,TILE_SIZE);
     pMenu->pMenuOptions[2] = makeStringInToSDL_Texture("Select character",pMenu->pFont,pRenderer);
-    A = (SDL_Point){1,5};
-    pMenu->rect[4] = setingSizeOfStringToRect("Select character",A,TILE_SIZE,TILE_SIZE);
+    pMenu->MenuPlasment[3] = (SDL_Point){1,1};
+    pMenu->rect[4] = setingSizeOfStringToRect("Select character",pMenu->MenuPlasment[3],TILE_SIZE,TILE_SIZE);
     pMenu->pMenuOptions[3] = makeStringInToSDL_Texture("Create map",pMenu->pFont,pRenderer);
-    A = (SDL_Point){1,6};
-    pMenu->rect[5] = setingSizeOfStringToRect("Create map",A,TILE_SIZE,TILE_SIZE);
+    pMenu->MenuPlasment[4] = (SDL_Point){1,3};
+    pMenu->rect[5] = setingSizeOfStringToRect("Create map",pMenu->MenuPlasment[4],TILE_SIZE,TILE_SIZE);
     pMenu->pMenuOptions[4] = makeStringInToSDL_Texture("New character",pMenu->pFont,pRenderer);
-    A = (SDL_Point){1,7};
-    pMenu->rect[6] = setingSizeOfStringToRect("New character",A,TILE_SIZE,TILE_SIZE);
+    pMenu->MenuPlasment[5] = (SDL_Point){1,2};
+    pMenu->rect[6] = setingSizeOfStringToRect("New character",pMenu->MenuPlasment[5],TILE_SIZE,TILE_SIZE);
     pMenu->pMenuOptions[5] = makeStringInToSDL_Texture("DONE",pMenu->pFont,pRenderer);
-    A = (SDL_Point){1,9};
-    pMenu->rect[7] = setingSizeOfStringToRect("DONE",A,TILE_SIZE,TILE_SIZE);
+    pMenu->MenuPlasment[6] = (SDL_Point){1,9};
+    pMenu->rect[7] = setingSizeOfStringToRect("DONE",pMenu->MenuPlasment[6],TILE_SIZE,TILE_SIZE);
     pMenu->pMenuOptions[6] = makeStringInToSDL_Texture("< >",pMenu->pFont,pRenderer);
-    A = (SDL_Point){18,0};
-    pMenu->rect[8] = setingSizeOfStringToRect("< >",A,TILE_SIZE,TILE_SIZE); // resize
+    pMenu->MenuPlasment[7] = (SDL_Point){18,0};
+    pMenu->rect[8] = setingSizeOfStringToRect("< >",pMenu->MenuPlasment[7],TILE_SIZE,TILE_SIZE); // resize
     pMenu->pMenuOptions[7] = makeStringInToSDL_Texture("QUIT",pMenu->pFont,pRenderer);
-    A = (SDL_Point){10,10};
-    pMenu->rect[9] = setingSizeOfStringToRect("QUIT",A,TILE_SIZE,TILE_SIZE); 
+    pMenu->MenuPlasment[8] = (SDL_Point){10,10};
+    pMenu->rect[9] = setingSizeOfStringToRect("QUIT",pMenu->MenuPlasment[8],TILE_SIZE,TILE_SIZE); 
     for (int i = 0; i < NUMMBER_OF_MENU_OPTIONS-2; i++){
         if(!pMenu->pMenuOptions[i]){
             fprintf(stderr,"Error creating textrer for menu text (%d):%s",i,SDL_GetError());
@@ -90,7 +91,11 @@ SDL_Texture* makeStringInToSDL_Texture(char string[NAME], TTF_Font *pFont,SDL_Re
 
 void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
     SDL_RenderCopy(pRenderer,pMenu->pBackTextur,NULL,&pMenu->rect[0]);
-    SDL_RenderCopy(pRenderer,pMenu->playerName,NULL,&pMenu->rect[1]);
+    if(pMenu->isWriting){
+        SDL_SetRenderDrawColor(pRenderer,0,0,0,75);
+        SDL_RenderFillRect(pRenderer, &pMenu->rect[1]);
+        SDL_RenderCopy(pRenderer,pMenu->playerName,NULL,&pMenu->rect[1]);
+    }
     for (int i = 0; i < NUMMBER_OF_MENU_OPTIONS-2; i++){
         SDL_RenderCopy(pRenderer,pMenu->pMenuOptions[i],NULL,&pMenu->rect[i+2]);
     }
@@ -105,19 +110,17 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool p
     //SDL_ShowCursor(SDL_ENABLE);
     SDL_Point mouse;
     Uint32 mouseState = SDL_GetMouseState(&mouse.x, &mouse.y);
-    
     switch (event.type){
     case SDL_QUIT: 
         pMenu->open = false;
         pGame = false;
         break;
-    case SDL_MOUSEBUTTONDOWN:
+    case SDL_MOUSEBUTTONDOWN: pControls->keys[event.button.type] = true;
         break;
-    case SDL_MOUSEBUTTONUP:
-        break;
-    case SDL_TEXTINPUT:
+    case SDL_MOUSEBUTTONUP:  pControls->keys[event.button.type] = false;
         break;
     default:
+
         break;
     }
     for (int i = 2; i < NUMMBER_OF_MENU_OPTIONS; i++){ //starting on 2 (streng och bracrgrund)
@@ -135,7 +138,8 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool p
                     updateTileSizeForMenu(pWindow,pMap,pMenu,pControls->pCamera);
                     pControls->deltaTimeResize = 0;
                     break;
-                
+                case 6: pMenu->isWriting = true; 
+                    break;
                 default:
                     break;
                 }
@@ -160,32 +164,33 @@ void updateTileSizeForMenu(SDL_Window *pWindow,Map *pMap,Menu *pMenu,Camera *pCa
     pMenu->rect[0].h = height;
     pMenu->rect[0].w = width;
     //string
-    SDL_Point A ={1,3};//x,y
-    pMenu->rect[1] = setingSizeOfStringToRect("?string?",A,pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
+
+    pMenu->rect[1] = setingSizeOfStringToRect("?string?",pMenu->MenuPlasment[0],
+                                            pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
     //play
-    A = (SDL_Point){1,4};
-    pMenu->rect[2] = setingSizeOfStringToRect("play",A,pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
+    pMenu->rect[2] = setingSizeOfStringToRect("play",pMenu->MenuPlasment[1],
+                                            pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
     //back
-    A = (SDL_Point){1,5};
-    pMenu->rect[3] = setingSizeOfStringToRect("back",A,pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
+    pMenu->rect[3] = setingSizeOfStringToRect("back",pMenu->MenuPlasment[2],
+                                            pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
     //Select character
-    A = (SDL_Point){1,6};
-    pMenu->rect[4] = setingSizeOfStringToRect("Select character",A,pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
+    pMenu->rect[4] = setingSizeOfStringToRect("Select character",pMenu->MenuPlasment[3],
+                                            pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
     //Create map
-    A = (SDL_Point){1,7};
-    pMenu->rect[5] = setingSizeOfStringToRect("Create map",A,pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
+    pMenu->rect[5] = setingSizeOfStringToRect("Create map",pMenu->MenuPlasment[4],
+                                            pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
     //New character
-    A = (SDL_Point){1,8};
-    pMenu->rect[6] = setingSizeOfStringToRect("New character",A,pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
+    pMenu->rect[6] = setingSizeOfStringToRect("New character",pMenu->MenuPlasment[5],
+                                            pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
     //DONE
-    A = (SDL_Point){1,9};
-    pMenu->rect[7] = setingSizeOfStringToRect("DONE",A,pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
+    pMenu->rect[7] = setingSizeOfStringToRect("DONE",pMenu->MenuPlasment[6],
+                                            pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
     //< >
-    A = (SDL_Point){18,0};
-    pMenu->rect[8] = setingSizeOfStringToRect("< >",A,pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
+    pMenu->rect[8] = setingSizeOfStringToRect("< >",pMenu->MenuPlasment[7],
+                                            pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
     //Quit
-    A = (SDL_Point){1,10};
-    pMenu->rect[9] = setingSizeOfStringToRect("QUIT",A,pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
+    pMenu->rect[9] = setingSizeOfStringToRect("QUIT",pMenu->MenuPlasment[8],
+                                            pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
     //updating map
     updatCurentMap(pMap);
     //also updeting camer pos 

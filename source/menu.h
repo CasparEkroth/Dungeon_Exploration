@@ -7,13 +7,14 @@
 
 typedef struct {
     char stringPlayerName[NAME];
-    SDL_Texture *playerName;
+    SDL_Texture *playerName;// string 
     SDL_Texture *pBackTextur;// bakrungdsbild
-    SDL_Texture *pMenuOptions[NUMMBER_OF_MENU_OPTIONS-2];
+    SDL_Texture *pMenuOptions[NUMMBER_OF_MENU_OPTIONS-2];//-back,string
+    SDL_Point MenuPlasment[NUMMBER_OF_MENU_OPTIONS-1]; //-back
     int leter,highlight_rect;
     TTF_Font *pFont;
     SDL_Rect rect[NUMMBER_OF_MENU_OPTIONS];
-    bool open;
+    bool open,isWriting;
 }Menu;
 
 Menu* initialize_Menu(SDL_Renderer *pRenderere, SDL_Window *pWindow);
