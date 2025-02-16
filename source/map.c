@@ -111,7 +111,6 @@ Map *createMap(SDL_Renderer *pRenderre){
     pMap->tileIndex[5] = (SDL_Rect){80,150,16,16}; //wall side (left)
     pMap->tileIndex[6] = (SDL_Rect){127,165,16,16}; //wall/turn (rhigt -> dowen)
     pMap->tileIndex[7] = (SDL_Rect){81,150,16,16}; //wall side (left)(neds Ex)
-
     return pMap;
 }
 
@@ -125,3 +124,50 @@ void updatCurentMap(Map *pMap){
         }
     }
 }
+
+ScreenAndInput* initialize_input(void){
+    ScreenAndInput* pScreenAndInput = malloc(sizeof(ScreenAndInput));
+        if(!pScreenAndInput){
+        fprintf(stderr,"Memory allocation failed for ScreenAndInput\n");
+        return NULL;
+    }
+    pScreenAndInput->currentTime = 0;
+    pScreenAndInput->previousTime = 0;
+    pScreenAndInput->deltaTimeResize = 0;
+    return pScreenAndInput;
+}
+
+Camera *initialize_camera(void){
+    Camera* pCamera = malloc(sizeof(Camera));
+        if(!pCamera){
+        fprintf(stderr,"Memory allocation failed for Camera\n");
+        return NULL;
+    }
+    pCamera->Ofset.x = 0;
+    pCamera->Ofset.y = 0;
+    pCamera->curentPos.x = STARTING_WINDOW_WIDTH/2;
+    pCamera->curentPos.y = STARTING_WINDOW_HEIGHT/2;
+    return pCamera;
+}
+
+bool colitino(SDL_Rect A,SDL_Rect B){
+    if(A.x + A.w >= B.x && 
+        A.x <= B.x + B.w &&
+        A.y + A.h >= B.y &&
+        A.y <= B.y + B.h){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool pointInRect(SDL_Rect A, SDL_Point P) {
+    if (P.x >= A.x && 
+        P.x <  A.x + A.w && 
+        P.y >= A.y && 
+        P.y <  A.y + A.h){
+        return true;
+    }
+    return false;
+}
+
