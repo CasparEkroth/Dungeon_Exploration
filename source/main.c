@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include "game.h"
+#include "map_maker.h"
 
 void initGame(Game *g);
 

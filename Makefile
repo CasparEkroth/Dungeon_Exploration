@@ -4,7 +4,7 @@ CFLAGS=-fsanitize=address -g -c -I/opt/homebrew/include/SDL2 -I/opt/homebrew/inc
 LDFLAGS=-fsanitize=address -I/opt/homebrew/include/SDL2 -L/opt/homebrew/lib -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 # File names
-OBJ=main.o map.o player.o game.o menu.o #enemy.o
+OBJ=main.o map.o player.o game.o menu.o map_maker.o #enemy.o
 EXEC=Dungeon_Exploration
 
 # Linking
@@ -26,6 +26,9 @@ menu.o: source/menu.c
 
 #enemy.o: source/enemy.c
 #	$(CC) $(CFLAGS) source/enemy.c -o enemy.o
+
+map_maker.o: source/map_maker.c
+	$(CC) $(CFLAGS) source/map_maker.c -o map_maker.o
 
 game.o: source/game.c
 	$(CC) $(CFLAGS) source/game.c -o game.o

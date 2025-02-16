@@ -14,7 +14,6 @@ Boolien* initialize_Boolien(void){
     return pBoolien;
 }
 
-
 Menu* initialize_Menu(SDL_Renderer *pRenderer,SDL_Window *pWindow){
     Menu* pMenu = malloc(sizeof(Menu));
     if(!pMenu){
