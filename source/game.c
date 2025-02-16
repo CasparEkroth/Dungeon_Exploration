@@ -18,7 +18,7 @@ void update(Game *pGame){
 
 void render(Game *pGame){
     SDL_RenderClear(pGame->pRenderer);
-    if(pGame->pMenu->open){
+    if(pGame->pMenu->pBoolien->isOpen){
         renderMenu(pGame->pRenderer,pGame->pMenu);
     }else{
         renderMap(pGame->pRenderer,pGame->pMap);
@@ -35,42 +35,44 @@ void input(Game *pGame, SDL_Event event){
     pGame->pControls->pCamera->Ofset.x = 0;
     pGame->pControls->pCamera->Ofset.y = 0;
     pGame->pControls->deltaTimeResize += pGame->pControls->currentTime - pGame->pControls->previousTime;
-    if(pGame->pMenu->open){
-        inputForMenu(pGame->pMenu,event,pGame->pControls,pGame->game_is_running,pGame->pWindow,pGame->pMap);
-    }
+
     while (SDL_PollEvent(&event)){
-        switch (event.type){
-        case SDL_QUIT: 
-            pGame->game_is_running = false;
-            break;
-        case SDL_KEYDOWN:
-            pGame->pControls->keys[event.key.keysym.scancode] = true; //kan man göra till en funktion 
-            break;
-        case SDL_KEYUP:
-            pGame->pControls->keys[event.key.keysym.scancode] = false;
-            break;
-        case SDL_TEXTINPUT:
-            if(pGame->pControls->keys[SDL_SCANCODE_0]) pGame->pMenu->open = false;
-            if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
-            if(pGame->pControls->keys[SDL_SCANCODE_BACKSPACE]){
-                pGame->pMenu->stringPlayerName[strlen(pGame->pMenu->stringPlayerName)-1] = ' ';
+        if(pGame->pMenu->pBoolien->isOpen){
+            inputForMenu(pGame->pMenu,event,pGame->pControls,&pGame->game_is_running,pGame->pWindow,pGame->pMap);
+        }else{
+            switch (event.type){
+            case SDL_QUIT: 
+                pGame->game_is_running = false;
+                break;
+            case SDL_KEYDOWN:
+                pGame->pControls->keys[event.key.keysym.scancode] = true; //kan man göra till en funktion 
+                break;
+            case SDL_KEYUP:
+                pGame->pControls->keys[event.key.keysym.scancode] = false;
+                break;
+            case SDL_TEXTINPUT:
+                if(pGame->pControls->keys[SDL_SCANCODE_0]) pGame->pMenu->pBoolien->isOpen = false;
+                if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
+                if(pGame->pControls->keys[SDL_SCANCODE_BACKSPACE]){
+                    pGame->pMenu->stringPlayerName[strlen(pGame->pMenu->stringPlayerName)-1] = ' ';
+                }
+                if(pGame->pMenu->pBoolien->isOpen){//text handler 
+                    strcat(pGame->pMenu->stringPlayerName,event.text.text); 
+                    pGame->pMenu->playerName = makeStringInToSDL_Texture(pGame->pMenu->stringPlayerName,pGame->pMenu->pFont,pGame->pRenderer);
+                    pGame->pMenu->leter++;
+                    pGame->pMenu->rect[1].w = 15+(pGame->pMenu->leter*15);
+                }
+                break;
+            default:
+                break;
             }
-            if(pGame->pMenu->open){//text handler 
-                strcat(pGame->pMenu->stringPlayerName,event.text.text); 
-                pGame->pMenu->playerName = makeStringInToSDL_Texture(pGame->pMenu->stringPlayerName,pGame->pMenu->pFont,pGame->pRenderer);
-                pGame->pMenu->leter++;
-                pGame->pMenu->rect[1].w = 15+(pGame->pMenu->leter*15);
-            }
-            break;
-        default:
-            break;
-        }
-    }        
+        }       
+    }
     if(pGame->pPlayer->pInventory->open){
         //intput för inventory
 
-    }else if(pGame->pMenu->open){
-        if(pGame->pControls->keys[SDL_SCANCODE_0]) pGame->pMenu->open = false;
+    }else if(pGame->pMenu->pBoolien->isOpen){
+        if(pGame->pControls->keys[SDL_SCANCODE_0]) pGame->pMenu->pBoolien->isOpen = false;
     }else{
         if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
         if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pControls->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
@@ -163,6 +165,7 @@ void closeGame(Game *pGame){
         for (int i = 0; i < NUMMBER_OF_MENU_OPTIONS-2; i++){
             if(pGame->pMenu->pMenuOptions[i]) SDL_DestroyTexture(pGame->pMenu->pMenuOptions[i]);
         }
+        free(pGame->pMenu->pBoolien);
         free(pGame->pMenu);
     }
     if (pGame->pRenderer) SDL_DestroyRenderer(pGame->pRenderer);

@@ -1,5 +1,20 @@
 #include "menu.h"
 
+Boolien* initialize_Boolien(void){
+    Boolien* pBoolien = malloc(sizeof(Boolien));
+    if(!pBoolien){
+        fprintf(stderr,"Memory allocation failed for Boolien(menu)\n");
+        return NULL;
+    }
+    pBoolien->isOpen = true;
+    pBoolien->isChoosingCharacter = false;
+    pBoolien->isDone = false;
+    pBoolien->isWriting = false;
+
+    return pBoolien;
+}
+
+
 Menu* initialize_Menu(SDL_Renderer *pRenderer,SDL_Window *pWindow){
     Menu* pMenu = malloc(sizeof(Menu));
     if(!pMenu){
@@ -12,15 +27,13 @@ Menu* initialize_Menu(SDL_Renderer *pRenderer,SDL_Window *pWindow){
     strcpy(pMenu->stringPlayerName,&empty);
 
     pMenu->rect[1] = (SDL_Rect){50,50,15,50}; //koll vart de ska vara 
-    pMenu->MenuPlasment[0] =(SDL_Point){11,11};
+    pMenu->MenuPlasment[0] =(SDL_Point){11,3};
     pMenu->pFont = TTF_OpenFont("resourses/RubikMaps-Regular.ttf",24);
         if(!pMenu->pFont){
         fprintf(stderr,"Error: Loding font: %s\n", TTF_GetError());
         return false;
     }
     pMenu->playerName = makeStringInToSDL_Texture("",pMenu->pFont,pRenderer);
-    pMenu->open = true;
-    pMenu->isWriting = false;
     SDL_Surface *pBack = IMG_Load("resourses/background.jpg");
     if(!pBack){
         fprintf(stderr,"Error creating suface for backgrund(menu): %s",IMG_GetError());
@@ -91,7 +104,7 @@ SDL_Texture* makeStringInToSDL_Texture(char string[NAME], TTF_Font *pFont,SDL_Re
 
 void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
     SDL_RenderCopy(pRenderer,pMenu->pBackTextur,NULL,&pMenu->rect[0]);
-    if(pMenu->isWriting){
+    if(pMenu->pBoolien->isWriting){
         SDL_SetRenderDrawColor(pRenderer,0,0,0,75);
         SDL_RenderFillRect(pRenderer, &pMenu->rect[1]);
         SDL_RenderCopy(pRenderer,pMenu->playerName,NULL,&pMenu->rect[1]);
@@ -106,27 +119,29 @@ void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
     }
 }
 
-void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool pGame,SDL_Window *pWindow,Map *pMap){
+void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *pGame,SDL_Window *pWindow,Map *pMap){
     //SDL_ShowCursor(SDL_ENABLE);
     SDL_Point mouse;
     Uint32 mouseState = SDL_GetMouseState(&mouse.x, &mouse.y);
     switch (event.type){
     case SDL_QUIT: 
-        pMenu->open = false;
+        pMenu->pBoolien->isOpen = false;
         pGame = false;
         break;
-    case SDL_MOUSEBUTTONDOWN: pControls->keys[event.button.type] = true;
+    case SDL_MOUSEBUTTONDOWN:
+        if (event.button.button == SDL_BUTTON_LEFT) pControls->keys[SDL_BUTTON_LEFT] = true; 
         break;
-    case SDL_MOUSEBUTTONUP:  pControls->keys[event.button.type] = false;
+    case SDL_MOUSEBUTTONUP:
+        if (event.button.button == SDL_BUTTON_LEFT) pControls->keys[SDL_BUTTON_LEFT] = false; 
         break;
     default:
-
         break;
     }
     for (int i = 2; i < NUMMBER_OF_MENU_OPTIONS; i++){ //starting on 2 (streng och bracrgrund)
         if(pointInRect(pMenu->rect[i],mouse)){
             pMenu->highlight_rect = i;
-            if(mouseState){
+            if(mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)){
+                pControls->keys[SDL_BUTTON_LEFT] = false;
                 switch (i){
                 case 8: //< > 
                     if(pControls->deltaTimeResize <= 2000) return;
@@ -138,7 +153,12 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool p
                     updateTileSizeForMenu(pWindow,pMap,pMenu,pControls->pCamera);
                     pControls->deltaTimeResize = 0;
                     break;
-                case 6: pMenu->isWriting = true; 
+                case 6: //crating carecter
+                    pMenu->pBoolien->isWriting = true; 
+                    break;
+                case 9: //Quting 
+                    pMenu->pBoolien->isOpen = false;
+                    pGame = false;//funkar ej vet ej varför
                     break;
                 default:
                     break;
@@ -164,7 +184,6 @@ void updateTileSizeForMenu(SDL_Window *pWindow,Map *pMap,Menu *pMenu,Camera *pCa
     pMenu->rect[0].h = height;
     pMenu->rect[0].w = width;
     //string
-
     pMenu->rect[1] = setingSizeOfStringToRect("?string?",pMenu->MenuPlasment[0],
                                             pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
     //play
