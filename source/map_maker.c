@@ -22,7 +22,7 @@ MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH, char old
         }
         
     }
-    pMapMaker->selectedTile = NULL;
+    pMapMaker->selectedTile = ' ';
     return pMapMaker;
 } 
 
@@ -39,7 +39,7 @@ void maker(MapMaker *pMapMaker, Game *pGame,SDL_Event event){
 }
 
 void maker_render(SDL_Renderer *pRendererer,MapMaker *pMapMaker,Map *pMap){
-
+    renderMap(pRendererer,pMapMaker->map,pMap->tileIndex,pMap->pTileShet,pMapMaker->rect_map);
 }
 
 void maker_update(MapMaker *pMapMaker){

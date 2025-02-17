@@ -47,7 +47,10 @@ typedef struct {
 
 
 Map *createMap(SDL_Renderer *pRenderre);
-void renderMap(SDL_Renderer *pRenderer, Map *pMap);
+void renderMap(SDL_Renderer *pRenderer,char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X],
+                SDL_Rect tileIndex[NUMMBER_OF_DIFFERENT_TILSE],SDL_Texture *pTileShet,
+                SDL_Rect tileRect[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]);
+
 void updatCurentMap(Map *pMap);
 
 void trimWhitespace(char *str);

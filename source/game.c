@@ -21,7 +21,8 @@ void render(Game *pGame){
     if(pGame->pMenu->pBoolien->isOpen){
         renderMenu(pGame->pRenderer,pGame->pMenu);
     }else{
-        renderMap(pGame->pRenderer,pGame->pMap);
+        renderMap(pGame->pRenderer,pGame->pMap->tileMap,pGame->pMap->tileIndex,pGame->pMap->pTileShet,
+                pGame->pMap->tileRect);
         rednerPlayer(pGame->pRenderer,pGame->pPlayer,pGame->pControls->pCamera->Ofset);
         if(pGame->pPlayer->pInventory->open){
             //render invetory
