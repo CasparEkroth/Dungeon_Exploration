@@ -179,20 +179,33 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
     }
     if (pMenu->pBoolien->isWriting){
         switch (event.type){
-        case SDL_TEXTINPUT:
-            if(pControls->keys[SDL_SCANCODE_0]) pMenu->pBoolien->isOpen = false;
-            if(pControls->keys[SDL_SCANCODE_ESCAPE]) pGame = false;
-            if(pControls->keys[SDL_SCANCODE_BACKSPACE]){
-                pMenu->stringPlayerName[strlen(pMenu->stringPlayerName)-1] = ' ';
-            }
-                strcat(pMenu->stringPlayerName,event.text.text); 
+            case SDL_TEXTINPUT:
+                if(pControls->keys[SDL_SCANCODE_0]) pMenu->pBoolien->isOpen = false;
+                if(pControls->keys[SDL_SCANCODE_ESCAPE]) pGame = false;
+                // Handling backspace (DELETE)
+                if (event.type == SDL_KEYDOWN) {
+                    if (event.key.keysym.scancode == SDL_SCANCODE_BACKSPACE && strlen(pMenu->stringPlayerName) > 0) {
+                        pMenu->stringPlayerName[strlen(pMenu->stringPlayerName) - 1] = '\0'; // Remove last character
+                        pMenu->leter = (pMenu->leter > 0) ? pMenu->leter - 1 : 0;
+                        pMenu->rect[1].w = 15 + (pMenu->leter * 15);
+                    }
+                }
+                // Append new text from SDL_TEXTINPUT
+                strcat(pMenu->stringPlayerName, event.text.text); 
                 pMenu->leter++;
-                pMenu->rect[1].w = 15+(pMenu->leter*15);
-            
-            break;
+                pMenu->rect[1].w = 15 + (pMenu->leter * 15);
+                break;
+            case SDL_KEYDOWN: pControls->keys[event.key.keysym.scancode] = true; break;
+            case SDL_KEYUP: pControls->keys[event.key.keysym.scancode] = false; break;
         default:
             break;
         }
+        if ( pControls->keys[SDL_SCANCODE_BACKSPACE] && strlen(pMenu->stringPlayerName) > 0) {
+            pMenu->stringPlayerName[strlen(pMenu->stringPlayerName) - 1] = '\0'; // Remove last character
+            pMenu->leter = (pMenu->leter > 0) ? pMenu->leter - 1 : 0;
+            pMenu->rect[1].w = 15 + (pMenu->leter * 15);
+        }
+        if(pControls->keys[SDL_SCANCODE_RETURN]){} //enter kapen  
     }
     
 }
