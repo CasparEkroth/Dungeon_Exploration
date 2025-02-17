@@ -132,10 +132,12 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
         pGame = false;
         break;
     case SDL_MOUSEBUTTONDOWN:
-        if (event.button.button == SDL_BUTTON_LEFT) pControls->keys[SDL_BUTTON_LEFT] = true; 
+        pControls->keys[event.button.state] = SDL_PRESSED;
+        //if (event.button.button == SDL_BUTTON_LEFT) pControls->keys[SDL_BUTTON_LEFT] = true; 
         break;
     case SDL_MOUSEBUTTONUP:
-        if (event.button.button == SDL_BUTTON_LEFT) pControls->keys[SDL_BUTTON_LEFT] = false; 
+        pControls->keys[event.button.state] = SDL_RELEASED;
+        //if (event.button.button == SDL_BUTTON_LEFT) pControls->keys[SDL_BUTTON_LEFT] = false; 
         break;
     default:
         break;

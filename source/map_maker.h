@@ -10,6 +10,7 @@ typedef struct {
     char map[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X];
     SDL_Rect rect_map[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X];
     bool isSavede,isChosingNewTile,isMakingMap;
+    bool keys[SDL_NUM_SCANCODES];
 }MapMaker;
 
 MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char romeName[NAME]);
@@ -17,8 +18,9 @@ MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char rome
 bool isOnListofRom(char fileName[NAME],char romName[NAME]);
 
 
-void maker(MapMaker *pMapMaker, Game *pGame,SDL_Event event);
-void maker_input(ScreenAndInput *pControls,SDL_Event event);
+void maker(MapMaker *pMapMaker, Game *pGame,SDL_Event event,bool *isGameRunnig,bool *isProgramRunnig);
+void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *isProgramRunnig);
+
 void maker_update(MapMaker *pMapMaker);
 void maker_render(SDL_Renderer *pRendererer,MapMaker *pMapMaker,Map *pMap);
 
