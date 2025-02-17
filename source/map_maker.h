@@ -11,11 +11,12 @@ typedef struct {
     bool isSavede,isChosingNewTile,isMakingMap;
 }MapMaker;
 
+MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH, char oldMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]);
 
-void maker(MapMaker *pMapMaker, Game *pGame);
-void maker_input(ScreenAndInput *pControls);
+void maker(MapMaker *pMapMaker, Game *pGame,SDL_Event event);
+void maker_input(ScreenAndInput *pControls,SDL_Event event);
 void maker_update(MapMaker *pMapMaker);
-void maker_render(SDL_Renderer *pRendererer,MapMaker *pMapMaker,Map *pMap){
+void maker_render(SDL_Renderer *pRendererer,MapMaker *pMapMaker,Map *pMap);
 
 
 #endif
