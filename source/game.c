@@ -47,6 +47,7 @@ void input(Game *pGame, SDL_Event event){
             switch (event.type){
             case SDL_QUIT: 
                 pGame->game_is_running = false;
+                pGame->isProgramnRunning = false;
                 break;
             case SDL_KEYDOWN:
                 pGame->pControls->keys[event.key.keysym.scancode] = true; //kan man göra till en funktion 
@@ -78,7 +79,7 @@ void input(Game *pGame, SDL_Event event){
     }else if(pGame->pMenu->pBoolien->isOpen){
         if(pGame->pControls->keys[SDL_SCANCODE_0]) pGame->pMenu->pBoolien->isOpen = false;
     }else{
-        if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
+        if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false; pGame->isProgramnRunning = false;
         if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pControls->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
         if(pGame->pControls->keys[SDL_SCANCODE_RIGHT])  pGame->pControls->pCamera->Ofset.x -= (pGame->pMap->TILE_SIZE_W / SLOWNES); 
         if(pGame->pControls->keys[SDL_SCANCODE_UP])  pGame->pControls->pCamera->Ofset.y += (pGame->pMap->TILE_SIZE_H / SLOWNES); 
