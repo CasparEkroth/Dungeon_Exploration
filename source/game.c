@@ -13,6 +13,9 @@ void gameRun(Game *pGame,SDL_Event event){
 
 void update(Game *pGame){
     pGame->pPlayer->deltaTime += pGame->pControls->currentTime - pGame->pControls->previousTime;
+    if(pGame->pMenu->pBoolien->isOpen){
+        updateMenu(pGame->pRenderer,pGame->pMenu);
+    }
     worldUpdate(pGame);
 }
 

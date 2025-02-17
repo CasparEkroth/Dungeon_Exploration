@@ -34,8 +34,7 @@ void maker(MapMaker *pMapMaker, Game *pGame,SDL_Event event){
         maker_update(pMapMaker);
         maker_render(pGame->pRenderer,pMapMaker,pGame->pMap);
     }
-    
-
+    free(pMapMaker);
 }
 
 void maker_render(SDL_Renderer *pRendererer,MapMaker *pMapMaker,Map *pMap){
@@ -49,4 +48,8 @@ void maker_update(MapMaker *pMapMaker){
 
 void maker_input(ScreenAndInput *pControls,SDL_Event event){
 
+}
+
+void saveMademap(MapMaker *pMapMaker){
+    
 }

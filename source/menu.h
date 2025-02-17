@@ -31,6 +31,7 @@ SDL_Rect setingSizeOfStringToRect(char string[NAME],SDL_Point startingPoint,int 
 
 
 void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *pGame,SDL_Window *pWindow, Map *pMap);
+void updateMenu(SDL_Renderer *pRenderer,Menu *pMenu);
 void updateTileSizeForMenu(SDL_Window *pWindow,Map *pMap,Menu *pMenu,Camera *pCamera);
 
 

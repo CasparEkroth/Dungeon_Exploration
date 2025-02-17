@@ -118,6 +118,10 @@ void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
     }
 }
 
+void updateMenu(SDL_Renderer *pRenderer,Menu *pMenu){
+    pMenu->playerName = makeStringInToSDL_Texture(pMenu->stringPlayerName,pMenu->pFont,pRenderer);
+}
+
 void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *pGame,SDL_Window *pWindow,Map *pMap){
     //SDL_ShowCursor(SDL_ENABLE);
     SDL_Point mouse;
@@ -159,16 +163,36 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
                     pMenu->pBoolien->isOpen = false;
                     pGame = false;//funkar ej vet ej varför
                     break;
+                case 5:
+                    pMenu->pBoolien->isWriting = true;
+                    break;
                 default:
                     break;
                 }
-                //pMenu->rect[i].x += TILE_SIZE; 
             }
             break;
         }else{
             pMenu->highlight_rect = 0;
         }
     }
+    if (pMenu->pBoolien->isWriting){
+        switch (event.type){
+        case SDL_TEXTINPUT:
+            if(pControls->keys[SDL_SCANCODE_0]) pMenu->pBoolien->isOpen = false;
+            if(pControls->keys[SDL_SCANCODE_ESCAPE]) pGame = false;
+            if(pControls->keys[SDL_SCANCODE_BACKSPACE]){
+                pMenu->stringPlayerName[strlen(pMenu->stringPlayerName)-1] = ' ';
+            }
+                strcat(pMenu->stringPlayerName,event.text.text); 
+                pMenu->leter++;
+                pMenu->rect[1].w = 15+(pMenu->leter*15);
+            
+            break;
+        default:
+            break;
+        }
+    }
+    
 }
 
 void updateTileSizeForMenu(SDL_Window *pWindow,Map *pMap,Menu *pMenu,Camera *pCamera){ 

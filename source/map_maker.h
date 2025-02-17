@@ -6,17 +6,20 @@
 typedef struct {
     char selectedTile;
     char fileName[NAME];
+    char romeName[NAME];
     char map[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X];
     SDL_Rect rect_map[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X];
     bool isSavede,isChosingNewTile,isMakingMap;
 }MapMaker;
 
 MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH, char oldMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]);
-
+//ad rome name 
 void maker(MapMaker *pMapMaker, Game *pGame,SDL_Event event);
 void maker_input(ScreenAndInput *pControls,SDL_Event event);
 void maker_update(MapMaker *pMapMaker);
 void maker_render(SDL_Renderer *pRendererer,MapMaker *pMapMaker,Map *pMap);
+
+void saveMademap(MapMaker *pMapMaker);
 
 
 #endif
