@@ -16,29 +16,44 @@ void renderMap(SDL_Renderer *pRenderer,char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_
     for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
         for (int  x = 0; x < NUMMBER_OF_TILSE_X; x++){
             switch (tileMap[y][x]){
-            case 'v': //void
+            case 'a': //void
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[0],&tileRect[y][x]);
+                break;
+            case 'b': 
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[1],&tileRect[y][x]);
+                break;
+            case 'c':
                 SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[2],&tileRect[y][x]);
                 break;
-            case 'k': 
+            case 'd':
                 SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[3],&tileRect[y][x]);
                 break;
             case 'e':
                 SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[4],&tileRect[y][x]);
                 break;
-            case 'a':
+            case 'f':
                 SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[1],&tileRect[y][x]);
                 SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[5],&tileRect[y][x]);
                 break;
-            case 'b':
+            case 'g':
                 SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[6],&tileRect[y][x]);
                 break;
-            case 'c':
+            case 'h':
                 SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[1],&tileRect[y][x]);
                 SDL_RendererFlip a;
                 SDL_RenderCopyEx(pRenderer,pTileShet,&tileIndex[7],&tileRect[y][x],180,NULL,a);
                 break;
-            default:
+            case 'i':
+
                 break;
+            case 'j':
+
+                break;
+            case 'k':
+
+                break;
+            default:
+                break;// fixa så att de går i stigande ording 
             }
         }
         

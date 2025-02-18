@@ -7,7 +7,7 @@
 typedef struct {
     char selectedTile;
     SDL_Point highlight_rect;
-    SDL_Point mapOfset;
+    SDL_Point mapOfset,mousePos;
     char fileName[NAME];
     char romeName[NAME];
     char map[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X];
@@ -25,7 +25,7 @@ void maker(MapMaker *pMapMaker, Game *pGame,bool *isGameRunnig,bool *isProgramRu
 void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *isProgramRunnig);
 
 void maker_update(MapMaker *pMapMaker);
-void maker_render(SDL_Renderer *pRendererer,MapMaker *pMapMaker,Map *pMap);
+void maker_render(SDL_Renderer *pRendererer,MapMaker *pMapMaker,Map *pMap,SDL_Event event);
 
 void saveMademap(MapMaker *pMapMaker);
 

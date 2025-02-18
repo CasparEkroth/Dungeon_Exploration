@@ -157,7 +157,7 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
     for (int i = 2; i < NUMMBER_OF_MENU_OPTIONS; i++){ //starting on 2 (streng och bracrgrund)
         if(pointInRect(pMenu->rect[i],mouse)){
             pMenu->highlight_rect = i;
-            if(mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)){
+            if(mouseState){
                 pControls->keys[SDL_BUTTON_LEFT] = false;
                 switch (i){
                 case 8: //< > 
@@ -182,6 +182,10 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
                     break;
                 case 7: 
                     pMenu->pBoolien->isDone = true;
+                    break;
+                case 2:
+                    pMenu->pBoolien->isOpen = false;
+                    break;
                 default:
                     break;
                 }

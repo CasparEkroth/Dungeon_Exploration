@@ -32,6 +32,7 @@ MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char rome
     pMapMaker->selectedTile = ' ';
     pMapMaker->highlight_rect = (SDL_Point){0,0};
     pMapMaker->mapOfset = (SDL_Point){0,0};
+    pMapMaker->mousePos = (SDL_Point){0,0};
     return pMapMaker;
 } 
 
@@ -44,19 +45,38 @@ void maker(MapMaker *pMapMaker, Game *pGame,bool *isGameRunnig,bool *isProgramRu
             maker_input(pMapMaker,event,isGameRunnig,isProgramRunnig);
         }
         maker_update(pMapMaker);
-        maker_render(pGame->pRenderer,pMapMaker,pGame->pMap);
+        maker_render(pGame->pRenderer,pMapMaker,pGame->pMap,event);
     }
     free(pMapMaker);
 }
 
-void maker_render(SDL_Renderer *pRenderer,MapMaker *pMapMaker,Map *pMap){
+void maker_render(SDL_Renderer *pRenderer,MapMaker *pMapMaker,Map *pMap,SDL_Event event){
     SDL_RenderClear(pRenderer);
-    renderMap(pRenderer,pMapMaker->map,pMap->tileIndex,pMap->pTileShet,pMapMaker->rect_map);
+    Uint32 mouseState = SDL_GetMouseState(&pMapMaker->mousePos.x,&pMapMaker->mousePos.y);
+    if(pMapMaker->isChosingNewTile){
+        SDL_Rect A ={32,32,32,32};
+        for (int i = 0; i <NUMMBER_OF_DIFFERENT_TILSE; i++){
+            SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[i],&A);
+            if(pointInRect(A,pMapMaker->mousePos)){
+                SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);  // Red
+                SDL_RenderDrawRect(pRenderer, &A); 
+                if(mouseState){
+                    pMapMaker->selectedTile = ('a'+i);
+                    //printf("%c\n",pMapMaker->selectedTile);
+                    pMapMaker->isChosingNewTile = false;
+                }
+            }
+            A.x += 64;
+        }
+    }else{
+        renderMap(pRenderer,pMapMaker->map,pMap->tileIndex,pMap->pTileShet,pMapMaker->rect_map);
         SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);  // Red
         if (pMapMaker->highlight_rect.x < NUMMBER_OF_TILSE_X && pMapMaker->highlight_rect.y < NUMMBER_OF_TILSE_Y) {
             SDL_RenderDrawRect(pRenderer, &pMapMaker->rect_map[pMapMaker->highlight_rect.y][pMapMaker->highlight_rect.x]);
+
         }
-        SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255); 
+    }
+    SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
     SDL_RenderPresent(pRenderer);
 }
 
@@ -74,6 +94,7 @@ void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *is
     SDL_ShowCursor(SDL_ENABLE);
     SDL_Point mouse;
     Uint32 mouseState = SDL_GetMouseState(&mouse.x, &mouse.y);
+    pMapMaker->mousePos = mouse;
     switch (event.type){
     case SDL_QUIT:
         pMapMaker->isMakingMap = false;
@@ -82,7 +103,7 @@ void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *is
         break;
     case SDL_MOUSEBUTTONDOWN:
         pMapMaker->keys[event.button.state] = SDL_PRESSED;
-        break;
+        break;// fixa plasering va vld tile samt att man (input) för att göra en tile till (void)
     case SDL_MOUSEBUTTONUP:
         pMapMaker->keys[event.button.state] = SDL_RELEASED;
         break;
@@ -100,9 +121,11 @@ void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *is
             if(pointInRect(pMapMaker->rect_map[y][x],mouse)){
                 pMapMaker->highlight_rect.x = x;
                 pMapMaker->highlight_rect.y = y;
+                break;
             }
         }
     }
+    if(mouseState)pMapMaker->map[pMapMaker->highlight_rect.y][pMapMaker->highlight_rect.x] = pMapMaker->selectedTile;
     if(pMapMaker->keys[SDL_SCANCODE_ESCAPE]){
         pMapMaker->isMakingMap = false;
         isGameRunnig = false;
@@ -112,6 +135,8 @@ void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *is
     if(pMapMaker->keys[SDL_SCANCODE_DOWN]) pMapMaker->mapOfset.y -= SPEED;
     if(pMapMaker->keys[SDL_SCANCODE_LEFT]) pMapMaker->mapOfset.x = SPEED;
     if(pMapMaker->keys[SDL_SCANCODE_RIGHT]) pMapMaker->mapOfset.x -= SPEED;
+    if(pMapMaker->keys[SDL_SCANCODE_N]) pMapMaker->isChosingNewTile = true;
+    if(pMapMaker->keys[SDL_SCANCODE_RETURN]) pMapMaker->isChosingNewTile = false;
 }
 
 void saveMademap(MapMaker *pMapMaker){

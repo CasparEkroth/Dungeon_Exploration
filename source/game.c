@@ -39,7 +39,6 @@ void render(Game *pGame){
 }
 
 void input(Game *pGame, SDL_Event event){
-    //SDL_ShowCursor(SDL_DISABLE);
     pGame->pControls->pCamera->Ofset.x = 0;
     pGame->pControls->pCamera->Ofset.y = 0;
     pGame->pControls->deltaTimeResize += pGame->pControls->currentTime - pGame->pControls->previousTime;
