@@ -70,7 +70,7 @@ Menu* initialize_Menu(SDL_Renderer *pRenderer,SDL_Window *pWindow){
     pMenu->MenuPlasment[7] = (SDL_Point){18,0};
     pMenu->rect[8] = setingSizeOfStringToRect("< >",pMenu->MenuPlasment[7],TILE_SIZE,TILE_SIZE); // resize
     pMenu->pMenuOptions[7] = makeStringInToSDL_Texture("QUIT",pMenu->pFont,pRenderer);
-    pMenu->MenuPlasment[8] = (SDL_Point){10,10};
+    pMenu->MenuPlasment[8] = (SDL_Point){1,14};
     pMenu->rect[9] = setingSizeOfStringToRect("QUIT",pMenu->MenuPlasment[8],TILE_SIZE,TILE_SIZE); 
     for (int i = 0; i < NUMMBER_OF_MENU_OPTIONS-2; i++){
         if(!pMenu->pMenuOptions[i]){
@@ -129,7 +129,7 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
     switch (event.type){
     case SDL_QUIT: 
         pMenu->pBoolien->isOpen = false;
-        pGame = false;
+        pControls->keys[SDL_SCANCODE_ESCAPE] = true;
         break;
     case SDL_MOUSEBUTTONDOWN:
         pControls->keys[event.button.state] = SDL_PRESSED;
@@ -163,7 +163,7 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
                     break;
                 case 9: //Quting 
                     pMenu->pBoolien->isOpen = false;
-                    pGame = false;//funkar ej vet ej varför
+                    pControls->keys[SDL_SCANCODE_ESCAPE] = true;
                     break;
                 case 5:
                     pMenu->pBoolien->isWriting = true;
@@ -180,8 +180,7 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
     if (pMenu->pBoolien->isWriting){
         switch (event.type){
             case SDL_TEXTINPUT:
-                if(pControls->keys[SDL_SCANCODE_0]) pMenu->pBoolien->isOpen = false;
-                if(pControls->keys[SDL_SCANCODE_ESCAPE]) pGame = false;
+                //if(pControls->keys[SDL_SCANCODE_0]) pMenu->pBoolien->isOpen = false;
                 // Handling backspace (DELETE)
                 if (event.type == SDL_KEYDOWN) {
                     if (event.key.keysym.scancode == SDL_SCANCODE_BACKSPACE && strlen(pMenu->stringPlayerName) > 0) {
@@ -205,7 +204,8 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
             pMenu->leter = (pMenu->leter > 0) ? pMenu->leter - 1 : 0;
             pMenu->rect[1].w = 15 + (pMenu->leter * 15);
         }
-        if(pControls->keys[SDL_SCANCODE_RETURN]){} //enter kapen  
+        if(pControls->keys[SDL_SCANCODE_RETURN]) pMenu->pBoolien->isDone = true;
+        if(pControls->keys[SDL_SCANCODE_ESCAPE]) pGame = false;
     }
     
 }
