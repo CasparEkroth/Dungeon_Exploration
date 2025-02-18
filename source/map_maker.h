@@ -5,6 +5,7 @@
 
 typedef struct {
     char selectedTile;
+    SDL_Point highlight_rect;
     char fileName[NAME];
     char romeName[NAME];
     char map[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X];
@@ -18,7 +19,7 @@ MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char rome
 bool isOnListofRom(char fileName[NAME],char romName[NAME]);
 
 
-void maker(MapMaker *pMapMaker, Game *pGame,SDL_Event event,bool *isGameRunnig,bool *isProgramRunnig);
+void maker(MapMaker *pMapMaker, Game *pGame,bool *isGameRunnig,bool *isProgramRunnig);
 void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *isProgramRunnig);
 
 void maker_update(MapMaker *pMapMaker);

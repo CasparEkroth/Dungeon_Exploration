@@ -6,6 +6,8 @@
 
 typedef struct{
     bool isOpen,isWriting,isChoosingCharacter,isDone;
+    bool isCreatingCarecter;
+    bool isMakingMap;
 }Boolien;
 
 

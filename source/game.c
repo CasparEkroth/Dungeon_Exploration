@@ -8,6 +8,10 @@ void gameRun(Game *pGame,SDL_Event event){
         update(pGame);
         render(pGame);
         pGame->pControls->previousTime = pGame->pControls->currentTime;
+        if(!pGame->pMenu->pBoolien->isOpen && pGame->pMenu->pBoolien->isMakingMap){
+            pGame->game_is_running = false;
+            pGame->isMakingMap = true;
+        }
     }
 }
 

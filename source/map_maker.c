@@ -18,7 +18,7 @@ MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char rome
         }
     }
     pMapMaker->isChosingNewTile = false;
-    pMapMaker->isMakingMap = false;
+    pMapMaker->isMakingMap = true;
     pMapMaker->isSavede = false;
     strcpy(pMapMaker->fileName,fileName);
     for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
@@ -31,26 +31,39 @@ MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char rome
         }
     }
     pMapMaker->selectedTile = ' ';
+    pMapMaker->highlight_rect.x = 0;
+    pMapMaker->highlight_rect.y = 0;
     return pMapMaker;
 } 
 
 
-void maker(MapMaker *pMapMaker, Game *pGame,SDL_Event event,bool *isGameRunnig,bool *isProgramRunnig){
+void maker(MapMaker *pMapMaker, Game *pGame,bool *isGameRunnig,bool *isProgramRunnig){
+    SDL_Event event;
     while (pMapMaker->isMakingMap){
-        if(!pMapMaker->isMakingMap) return;
-        maker_input(pMapMaker,event,isGameRunnig,isProgramRunnig);
+        //if(!pMapMaker->isMakingMap) return;
+        //printf("in maker\n");
+        while (SDL_PollEvent(&event)){
+            maker_input(pMapMaker,event,isGameRunnig,isProgramRunnig);
+        }
         maker_update(pMapMaker);
         maker_render(pGame->pRenderer,pMapMaker,pGame->pMap);
     }
     free(pMapMaker);
 }
 
-void maker_render(SDL_Renderer *pRendererer,MapMaker *pMapMaker,Map *pMap){
-    renderMap(pRendererer,pMapMaker->map,pMap->tileIndex,pMap->pTileShet,pMapMaker->rect_map);
+void maker_render(SDL_Renderer *pRenderer,MapMaker *pMapMaker,Map *pMap){
+    SDL_RenderClear(pRenderer);
+    renderMap(pRenderer,pMapMaker->map,pMap->tileIndex,pMap->pTileShet,pMapMaker->rect_map);
+        SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);  // Red
+        if (pMapMaker->highlight_rect.x < NUMMBER_OF_TILSE_X && pMapMaker->highlight_rect.y < NUMMBER_OF_TILSE_Y) {
+            SDL_RenderDrawRect(pRenderer, &pMapMaker->rect_map[pMapMaker->highlight_rect.y][pMapMaker->highlight_rect.x]);
+        }
+        SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255); 
+    SDL_RenderPresent(pRenderer);
 }
 
 void maker_update(MapMaker *pMapMaker){
-
+SDL_Delay(30);
 }
 
 void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *isProgramRunnig){
@@ -81,10 +94,15 @@ void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *is
     for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
         for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
             if(pointInRect(pMapMaker->rect_map[y][x],mouse)){
-                //fixa en hiligt 
-                //som menyn
+                pMapMaker->highlight_rect.x = x;
+                pMapMaker->highlight_rect.y = y;
             }
         }
+    }
+    if(pMapMaker->keys[SDL_SCANCODE_ESCAPE]){
+        pMapMaker->isMakingMap = false;
+        isGameRunnig = false;
+        isProgramRunnig = false;
     }
 }
 

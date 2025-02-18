@@ -10,7 +10,8 @@ Boolien* initialize_Boolien(void){
     pBoolien->isChoosingCharacter = false;
     pBoolien->isDone = false;
     pBoolien->isWriting = false;
-
+    pBoolien->isChoosingCharacter = false;
+    pBoolien->isMakingMap = false;
     return pBoolien;
 }
 
@@ -120,6 +121,17 @@ void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
 
 void updateMenu(SDL_Renderer *pRenderer,Menu *pMenu){
     pMenu->playerName = makeStringInToSDL_Texture(pMenu->stringPlayerName,pMenu->pFont,pRenderer);
+    if(pMenu->pBoolien->isChoosingCharacter){
+        //render list of Carecters ######################################
+    }
+    if(pMenu->pBoolien->isDone && pMenu->pBoolien->isWriting){
+        if(pMenu->pBoolien->isCreatingCarecter){
+
+        }else{//creating map (done white naming rome)
+            pMenu->pBoolien->isOpen = false;
+            pMenu->pBoolien->isMakingMap = true;
+        }
+    }
 }
 
 void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *pGame,SDL_Window *pWindow,Map *pMap){
@@ -168,6 +180,8 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
                 case 5:
                     pMenu->pBoolien->isWriting = true;
                     break;
+                case 7: 
+                    pMenu->pBoolien->isDone = true;
                 default:
                     break;
                 }
