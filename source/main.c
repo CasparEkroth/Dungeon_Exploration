@@ -12,7 +12,8 @@ int main(){
     while (g.isProgramnRunning){
         gameRun(&g,event);
         if(g.isMakingMap && g.pMenu->pBoolien->isDone){
-            m = initMapMaker("resourses/countOfRoom.txt",g.pMap->TILE_SIZE_W,g.pMap->TILE_SIZE_H,g.pMenu->stringPlayerName);
+            m = initMapMaker("resourses/mapFile.txt",g.pMap->TILE_SIZE_W,
+                            g.pMap->TILE_SIZE_H,g.pMenu->stringPlayerName,"resourses/countOfRoom.txt");
             //printMap(m->map);
             maker(m,&g,&g.game_is_running,&g.isProgramnRunning);
         }

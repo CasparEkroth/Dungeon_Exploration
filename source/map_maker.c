@@ -1,19 +1,21 @@
 #include "map_maker.h"
 //input 
 //render 
-//seving to file 
-MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char romeName[NAME]){
+//seving to file                                                                                //ta bort
+MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char romeName[NAME],char fileList[NAME]){
     MapMaker* pMapMaker = malloc(sizeof(MapMaker));
     if(!pMapMaker){
         fprintf(stderr,"Erorr alocating memory for MapMaker\n");
         return NULL;
     }
-    if(isOnListofRom(fileName,romeName)){
-        redeFileForMap(pMapMaker->map,"resourses/mapFile.txt",romeName);
+    if(isOnListofRom(fileName,romeName,&pMapMaker->fileIdex)){
+        pMapMaker->isNewRoom = false;
+        redeFileForMap(pMapMaker->map,fileName,romeName);
     }else{
+        pMapMaker->isNewRoom = true;
         for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
             for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
-                pMapMaker->map[y][x] = 'v';
+                pMapMaker->map[y][x] = ('a'-1);
             }
         }
     }
@@ -21,6 +23,7 @@ MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char rome
     pMapMaker->isMakingMap = true;
     pMapMaker->isSavede = false;
     strcpy(pMapMaker->fileName,fileName);
+    strcpy(pMapMaker->romeName,romeName);
     for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
         for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
             pMapMaker->rect_map[y][x].w = tileSizeW;
@@ -47,6 +50,7 @@ void maker(MapMaker *pMapMaker, Game *pGame,bool *isGameRunnig,bool *isProgramRu
         maker_update(pMapMaker);
         maker_render(pGame->pRenderer,pMapMaker,pGame->pMap,event);
     }
+    saveMademap(pMapMaker);
     free(pMapMaker);
 }
 
@@ -73,7 +77,6 @@ void maker_render(SDL_Renderer *pRenderer,MapMaker *pMapMaker,Map *pMap,SDL_Even
         SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);  // Red
         if (pMapMaker->highlight_rect.x < NUMMBER_OF_TILSE_X && pMapMaker->highlight_rect.y < NUMMBER_OF_TILSE_Y) {
             SDL_RenderDrawRect(pRenderer, &pMapMaker->rect_map[pMapMaker->highlight_rect.y][pMapMaker->highlight_rect.x]);
-
         }
     }
     SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
@@ -140,25 +143,68 @@ void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *is
 }
 
 void saveMademap(MapMaker *pMapMaker){
+    FILE *fp = fopen(pMapMaker->fileName, "r");
+    if (!fp) {
+        fprintf(stderr, "Error: Could not open %s for reading!\n", pMapMaker->fileName);
+        return;
+    }
+    FILE *tmp = fopen("tmp.txt", "w");
+    if (!tmp) {
+        fprintf(stderr, "Error: Could not open tmp.txt for writing!\n");
+        fclose(fp);
+        return;
+    }
+    char buffer[256];
+    int count = 0;
+    int skipCondition = pMapMaker->fileIdex;
+    while (fgets(buffer, sizeof(buffer), fp) != NULL){//sker för tidigt 
+        if(count == skipCondition){
+            for (int i = 0; i < NUMMBER_OF_TILSE_Y; i++){
+                fgets(buffer, sizeof(buffer), fp);
+            }
+            break;
+        }
+        trimWhitespace(buffer);
+        fprintf(tmp,"%s\n",buffer);
+        count++;
+    }
+    fprintf(tmp,"%s\n",pMapMaker->romeName);
+    for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
+        for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
+            fprintf(tmp,"%c",pMapMaker->map[y][x]);
+        }
+        fprintf(tmp,"\n");
+    }
+    while (fgets(buffer,sizeof(buffer),fp) != NULL){
+        trimWhitespace(buffer);
+        fprintf(tmp,"%s\n",buffer);
+    }
+    
+    fclose(fp);
+    fclose(tmp);
 
+    remove(pMapMaker->fileName);
+    rename("tmp.txt", pMapMaker->fileName);
 }
 
-bool isOnListofRom(char fileName[NAME],char romName[NAME]){
+bool isOnListofRom(char fileName[NAME],char romName[NAME],int *fileIndex){
     char buffer[256];
-    int romCount = 0;
+    int contRom = 0,line = 0;
+
     FILE *fp = fopen(fileName, "r");
     if (fp == NULL) {
         fprintf(stderr,"Error: Clude not open %s!\n",fileName);
         return NULL;
     }
-    fscanf(fp," %d\n",&romCount);
-    for (int i = 0; i < romCount; i++){
-        fscanf(fp," %s\n",buffer);
+    while (fgets(buffer, sizeof(buffer), fp) != NULL){
         trimWhitespace(buffer);
-        if(strcmp(romName,buffer)>0){
+        if(strcmp(buffer,romName) == 0){
             fclose(fp);
-            return true; 
-        } 
+            *fileIndex = line;
+            printf("%d line ",*fileIndex);
+            return true;
+        }
+        line++;
     }
     fclose(fp);
     return false;
