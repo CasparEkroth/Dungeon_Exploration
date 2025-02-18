@@ -2,10 +2,12 @@
 #define MAP_MAKER_H
 #include "game.h"
 
+#define SPEED (32)
 
 typedef struct {
     char selectedTile;
     SDL_Point highlight_rect;
+    SDL_Point mapOfset;
     char fileName[NAME];
     char romeName[NAME];
     char map[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X];

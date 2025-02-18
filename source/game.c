@@ -106,7 +106,6 @@ void worldUpdate(Game *pGame){ // shifting the map
     }
     pGame->pControls->pCamera->curentPos.x += pGame->pControls->pCamera->Ofset.x;
     pGame->pControls->pCamera->curentPos.y += pGame->pControls->pCamera->Ofset.y;
-
 }
 
 int initialize_window(Game *pGame){ // Initialiserar SDL och skapar fönster

@@ -27,15 +27,13 @@ MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char rome
             pMapMaker->rect_map[y][x].h = tileSizeH;
             pMapMaker->rect_map[y][x].y = (tileSizeH*y);
             pMapMaker->rect_map[y][x].x = (tileSizeW*x);
-            //pMapMaker->map[y][x] = oldMap[y][x];
         }
     }
     pMapMaker->selectedTile = ' ';
-    pMapMaker->highlight_rect.x = 0;
-    pMapMaker->highlight_rect.y = 0;
+    pMapMaker->highlight_rect = (SDL_Point){0,0};
+    pMapMaker->mapOfset = (SDL_Point){0,0};
     return pMapMaker;
 } 
-
 
 void maker(MapMaker *pMapMaker, Game *pGame,bool *isGameRunnig,bool *isProgramRunnig){
     SDL_Event event;
@@ -63,7 +61,13 @@ void maker_render(SDL_Renderer *pRenderer,MapMaker *pMapMaker,Map *pMap){
 }
 
 void maker_update(MapMaker *pMapMaker){
-SDL_Delay(30);
+    for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
+        for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
+            pMapMaker->rect_map[y][x].x += pMapMaker->mapOfset.x;
+            pMapMaker->rect_map[y][x].y += pMapMaker->mapOfset.y;
+        }
+    }
+    pMapMaker->mapOfset =(SDL_Point){0,0};
 }
 
 void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *isProgramRunnig){
@@ -104,6 +108,10 @@ void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *is
         isGameRunnig = false;
         isProgramRunnig = false;
     }
+    if(pMapMaker->keys[SDL_SCANCODE_UP]) pMapMaker->mapOfset.y = SPEED;
+    if(pMapMaker->keys[SDL_SCANCODE_DOWN]) pMapMaker->mapOfset.y -= SPEED;
+    if(pMapMaker->keys[SDL_SCANCODE_LEFT]) pMapMaker->mapOfset.x = SPEED;
+    if(pMapMaker->keys[SDL_SCANCODE_RIGHT]) pMapMaker->mapOfset.x -= SPEED;
 }
 
 void saveMademap(MapMaker *pMapMaker){
@@ -122,7 +130,11 @@ bool isOnListofRom(char fileName[NAME],char romName[NAME]){
     for (int i = 0; i < romCount; i++){
         fscanf(fp," %s\n",buffer);
         trimWhitespace(buffer);
-        if(strcmp(romName,buffer)>0) return true; 
+        if(strcmp(romName,buffer)>0){
+            fclose(fp);
+            return true; 
+        } 
     }
+    fclose(fp);
     return false;
 }
