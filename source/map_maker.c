@@ -157,7 +157,7 @@ void saveMademap(MapMaker *pMapMaker){
     char buffer[256];
     int count = 0;
     int skipCondition = pMapMaker->fileIdex;
-    while (fgets(buffer, sizeof(buffer), fp) != NULL){//sker för tidigt 
+    while (fgets(buffer, sizeof(buffer), fp) != NULL){
         if(count == skipCondition){
             for (int i = 0; i < NUMMBER_OF_TILSE_Y; i++){
                 fgets(buffer, sizeof(buffer), fp);
