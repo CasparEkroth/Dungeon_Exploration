@@ -267,7 +267,7 @@ void updateTileSizeForMenu(SDL_Window *pWindow,Map *pMap,Menu *pMenu,Camera *pCa
     pMenu->rect[9] = setingSizeOfStringToRect("QUIT",pMenu->MenuPlasment[8],
                                             pMap->TILE_SIZE_H,pMap->TILE_SIZE_W); 
     //updating map
-    updatCurentMap(pMap);
+    updatCurentMap(pMap->tileRect,pMap->TILE_SIZE_W,pMap->TILE_SIZE_H);
     //also updeting camer pos 
     pCamera->curentPos.x = width/2;
     pCamera->curentPos.y = height/2;

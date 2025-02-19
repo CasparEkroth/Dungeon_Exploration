@@ -4,11 +4,13 @@
 
 #define NR_OF_ROMS 3
 #define SPEED (32)
+#define ZOOM 10
 
 typedef struct {
     char selectedTile;
     int fileIdex;
-    SDL_Point highlight_rect;
+    int zoom;
+    SDL_Point highlight_rect,visibleWindow;
     SDL_Point mapOfset,mousePos;
     char fileName[NAME];
     char romeName[NAME];
@@ -32,7 +34,7 @@ void maker(MapMaker *pMapMaker, Game *pGame,bool *isGameRunnig,bool *isProgramRu
 void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *isProgramRunnig);
 // tacks the inputs to make chenges
 
-void maker_update(MapMaker *pMapMaker);
+void maker_update(MapMaker *pMapMaker,SDL_Window *pWindow);
 // only movs the map
 
 void maker_render(SDL_Renderer *pRendererer,MapMaker *pMapMaker,Map *pMap,SDL_Event event);

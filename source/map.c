@@ -130,13 +130,13 @@ Map *createMap(SDL_Renderer *pRenderre){
     return pMap;
 }
 
-void updatCurentMap(Map *pMap){
+void updatCurentMap(SDL_Rect tileRect[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X],int TILE_SIZE_W,int TILE_SIZE_H){
     for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
         for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
-            pMap->tileRect[y][x].w = pMap->TILE_SIZE_W;
-            pMap->tileRect[y][x].h = pMap->TILE_SIZE_H;     
-            pMap->tileRect[y][x].x = (x * pMap->TILE_SIZE_W);
-            pMap->tileRect[y][x].y = (y * pMap->TILE_SIZE_H);
+            tileRect[y][x].w = TILE_SIZE_W;
+            tileRect[y][x].h = TILE_SIZE_H;     
+            tileRect[y][x].x = (x * TILE_SIZE_W);
+            tileRect[y][x].y = (y * TILE_SIZE_H);
         }
     }
 }

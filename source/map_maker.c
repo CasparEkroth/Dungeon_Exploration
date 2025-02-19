@@ -32,6 +32,9 @@ MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char rome
             pMapMaker->rect_map[y][x].x = (tileSizeW*x);
         }
     }
+    pMapMaker->zoom = 0;
+    pMapMaker->visibleWindow.x = VISIBLE_WINDOW_X;
+    pMapMaker->visibleWindow.y = VISIBLE_WINDOW_Y;
     pMapMaker->selectedTile = ' ';
     pMapMaker->highlight_rect = (SDL_Point){0,0};
     pMapMaker->mapOfset = (SDL_Point){0,0};
@@ -45,7 +48,7 @@ void maker(MapMaker *pMapMaker, Game *pGame,bool *isGameRunnig,bool *isProgramRu
         while (SDL_PollEvent(&event)){
             maker_input(pMapMaker,event,isGameRunnig,isProgramRunnig);
         }
-        maker_update(pMapMaker);
+        maker_update(pMapMaker,pGame->pWindow);
         maker_render(pGame->pRenderer,pMapMaker,pGame->pMap,event);
     }
     saveMademap(pMapMaker);
@@ -80,14 +83,24 @@ void maker_render(SDL_Renderer *pRenderer,MapMaker *pMapMaker,Map *pMap,SDL_Even
     SDL_RenderPresent(pRenderer);
 }
 
-void maker_update(MapMaker *pMapMaker){
+void maker_update(MapMaker *pMapMaker,SDL_Window *pWindow){
     for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
         for (int x = 0; x < NUMMBER_OF_TILSE_X; x++){
             pMapMaker->rect_map[y][x].x += pMapMaker->mapOfset.x;
             pMapMaker->rect_map[y][x].y += pMapMaker->mapOfset.y;
         }
     }
+    if(pMapMaker->zoom != 0){
+        int width, height;
+        SDL_GetWindowSize(pWindow, &width, &height);
+        pMapMaker->visibleWindow.x +=pMapMaker->zoom;
+        pMapMaker->visibleWindow.y +=pMapMaker->zoom;
+        width = width/pMapMaker->visibleWindow.x;
+        height = height/pMapMaker->visibleWindow.y;
+        updatCurentMap(pMapMaker->rect_map,width,height);
+    }
     pMapMaker->mapOfset =(SDL_Point){0,0};
+    pMapMaker->zoom = 0;
 }
 
 void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *isProgramRunnig){
@@ -137,6 +150,8 @@ void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *is
     if(pMapMaker->keys[SDL_SCANCODE_RIGHT]) pMapMaker->mapOfset.x -= SPEED;
     if(pMapMaker->keys[SDL_SCANCODE_N]) pMapMaker->isChosingNewTile = true;
     if(pMapMaker->keys[SDL_SCANCODE_RETURN]) pMapMaker->isChosingNewTile = false;
+    if(pMapMaker->keys[SDL_SCANCODE_P]) pMapMaker->zoom = -1; 
+    if(pMapMaker->keys[SDL_SCANCODE_M]) pMapMaker->zoom = 1; 
 }
 
 void saveMademap(MapMaker *pMapMaker){
