@@ -9,7 +9,7 @@ typedef struct {
     Player *pPlayer;
     ScreenAndInput *pControls;
     Menu *pMenu;
-    bool game_is_running;
+    bool game_is_running,isMakingMap,isProgramnRunning;
     SDL_Renderer *pRenderer;
     SDL_Window *pWindow;
     Map *pMap;

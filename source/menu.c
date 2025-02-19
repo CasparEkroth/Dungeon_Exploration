@@ -10,10 +10,10 @@ Boolien* initialize_Boolien(void){
     pBoolien->isChoosingCharacter = false;
     pBoolien->isDone = false;
     pBoolien->isWriting = false;
-
+    pBoolien->isChoosingCharacter = false;
+    pBoolien->isMakingMap = false;
     return pBoolien;
 }
-
 
 Menu* initialize_Menu(SDL_Renderer *pRenderer,SDL_Window *pWindow){
     Menu* pMenu = malloc(sizeof(Menu));
@@ -71,7 +71,7 @@ Menu* initialize_Menu(SDL_Renderer *pRenderer,SDL_Window *pWindow){
     pMenu->MenuPlasment[7] = (SDL_Point){18,0};
     pMenu->rect[8] = setingSizeOfStringToRect("< >",pMenu->MenuPlasment[7],TILE_SIZE,TILE_SIZE); // resize
     pMenu->pMenuOptions[7] = makeStringInToSDL_Texture("QUIT",pMenu->pFont,pRenderer);
-    pMenu->MenuPlasment[8] = (SDL_Point){10,10};
+    pMenu->MenuPlasment[8] = (SDL_Point){1,14};
     pMenu->rect[9] = setingSizeOfStringToRect("QUIT",pMenu->MenuPlasment[8],TILE_SIZE,TILE_SIZE); 
     for (int i = 0; i < NUMMBER_OF_MENU_OPTIONS-2; i++){
         if(!pMenu->pMenuOptions[i]){
@@ -119,6 +119,21 @@ void renderMenu(SDL_Renderer *pRenderer, Menu *pMenu){
     }
 }
 
+void updateMenu(SDL_Renderer *pRenderer,Menu *pMenu){
+    pMenu->playerName = makeStringInToSDL_Texture(pMenu->stringPlayerName,pMenu->pFont,pRenderer);
+    if(pMenu->pBoolien->isChoosingCharacter){
+        //render list of Carecters ######################################
+    }
+    if(pMenu->pBoolien->isDone && pMenu->pBoolien->isWriting){
+        if(pMenu->pBoolien->isCreatingCarecter){
+
+        }else{//creating map (done white naming rome)
+            pMenu->pBoolien->isOpen = false;
+            pMenu->pBoolien->isMakingMap = true;
+        }
+    }
+}
+
 void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *pGame,SDL_Window *pWindow,Map *pMap){
     //SDL_ShowCursor(SDL_ENABLE);
     SDL_Point mouse;
@@ -126,13 +141,15 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
     switch (event.type){
     case SDL_QUIT: 
         pMenu->pBoolien->isOpen = false;
-        pGame = false;
+        pControls->keys[SDL_SCANCODE_ESCAPE] = true;
         break;
     case SDL_MOUSEBUTTONDOWN:
-        if (event.button.button == SDL_BUTTON_LEFT) pControls->keys[SDL_BUTTON_LEFT] = true; 
+        pControls->keys[event.button.state] = SDL_PRESSED;
+        //if (event.button.button == SDL_BUTTON_LEFT) pControls->keys[SDL_BUTTON_LEFT] = true; 
         break;
     case SDL_MOUSEBUTTONUP:
-        if (event.button.button == SDL_BUTTON_LEFT) pControls->keys[SDL_BUTTON_LEFT] = false; 
+        pControls->keys[event.button.state] = SDL_RELEASED;
+        //if (event.button.button == SDL_BUTTON_LEFT) pControls->keys[SDL_BUTTON_LEFT] = false; 
         break;
     default:
         break;
@@ -140,7 +157,7 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
     for (int i = 2; i < NUMMBER_OF_MENU_OPTIONS; i++){ //starting on 2 (streng och bracrgrund)
         if(pointInRect(pMenu->rect[i],mouse)){
             pMenu->highlight_rect = i;
-            if(mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)){
+            if(mouseState){
                 pControls->keys[SDL_BUTTON_LEFT] = false;
                 switch (i){
                 case 8: //< > 
@@ -158,18 +175,57 @@ void inputForMenu(Menu *pMenu, SDL_Event event,ScreenAndInput *pControls, bool *
                     break;
                 case 9: //Quting 
                     pMenu->pBoolien->isOpen = false;
-                    pGame = false;//funkar ej vet ej varför
+                    pControls->keys[SDL_SCANCODE_ESCAPE] = true;
+                    break;
+                case 5:
+                    pMenu->pBoolien->isWriting = true;
+                    break;
+                case 7: 
+                    pMenu->pBoolien->isDone = true;
+                    break;
+                case 2:
+                    pMenu->pBoolien->isOpen = false;
                     break;
                 default:
                     break;
                 }
-                //pMenu->rect[i].x += TILE_SIZE; 
             }
             break;
         }else{
             pMenu->highlight_rect = 0;
         }
     }
+    if (pMenu->pBoolien->isWriting){
+        switch (event.type){
+            case SDL_TEXTINPUT:
+                //if(pControls->keys[SDL_SCANCODE_0]) pMenu->pBoolien->isOpen = false;
+                // Handling backspace (DELETE)
+                if (event.type == SDL_KEYDOWN) {
+                    if (event.key.keysym.scancode == SDL_SCANCODE_BACKSPACE && strlen(pMenu->stringPlayerName) > 0) {
+                        pMenu->stringPlayerName[strlen(pMenu->stringPlayerName) - 1] = '\0'; // Remove last character
+                        pMenu->leter = (pMenu->leter > 0) ? pMenu->leter - 1 : 0;
+                        pMenu->rect[1].w = 15 + (pMenu->leter * 15);
+                    }
+                }
+                // Append new text from SDL_TEXTINPUT
+                strcat(pMenu->stringPlayerName, event.text.text); 
+                pMenu->leter++;
+                pMenu->rect[1].w = 15 + (pMenu->leter * 15);
+                break;
+            case SDL_KEYDOWN: pControls->keys[event.key.keysym.scancode] = true; break;
+            case SDL_KEYUP: pControls->keys[event.key.keysym.scancode] = false; break;
+        default:
+            break;
+        }
+        if ( pControls->keys[SDL_SCANCODE_BACKSPACE] && strlen(pMenu->stringPlayerName) > 0) {
+            pMenu->stringPlayerName[strlen(pMenu->stringPlayerName) - 1] = '\0'; // Remove last character
+            pMenu->leter = (pMenu->leter > 0) ? pMenu->leter - 1 : 0;
+            pMenu->rect[1].w = 15 + (pMenu->leter * 15);
+        }
+        if(pControls->keys[SDL_SCANCODE_RETURN]) pMenu->pBoolien->isDone = true;
+        if(pControls->keys[SDL_SCANCODE_ESCAPE]) pGame = false;
+    }
+    
 }
 
 void updateTileSizeForMenu(SDL_Window *pWindow,Map *pMap,Menu *pMenu,Camera *pCamera){ 

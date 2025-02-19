@@ -10,33 +10,50 @@ void printMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]){
 }
 }
 
-void renderMap(SDL_Renderer *pRenderer, Map *pMap){
+void renderMap(SDL_Renderer *pRenderer,char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X],
+                SDL_Rect tileIndex[NUMMBER_OF_DIFFERENT_TILSE],SDL_Texture *pTileShet,
+                SDL_Rect tileRect[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]){
     for (int y = 0; y < NUMMBER_OF_TILSE_Y; y++){
         for (int  x = 0; x < NUMMBER_OF_TILSE_X; x++){
-            switch (pMap->tileMap[y][x]){
-            case 'v': //void
-                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[2],&pMap->tileRect[y][x]);
+            switch (tileMap[y][x]){
+            case 'a': //void
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[0],&tileRect[y][x]);
                 break;
-            case 'k': 
-                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[3],&pMap->tileRect[y][x]);
-                break;
-            case 'e':
-                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[4],&pMap->tileRect[y][x]);
-                break;
-            case 'a':
-                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[1],&pMap->tileRect[y][x]);
-                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[5],&pMap->tileRect[y][x]);
-                break;
-            case 'b':
-                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[6],&pMap->tileRect[y][x]);
+            case 'b': 
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[1],&tileRect[y][x]);
                 break;
             case 'c':
-                SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[1],&pMap->tileRect[y][x]);
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[2],&tileRect[y][x]);
+                break;
+            case 'd':
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[3],&tileRect[y][x]);
+                break;
+            case 'e':
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[4],&tileRect[y][x]);
+                break;
+            case 'f':
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[1],&tileRect[y][x]);
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[5],&tileRect[y][x]);
+                break;
+            case 'g':
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[6],&tileRect[y][x]);
+                break;
+            case 'h':
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[1],&tileRect[y][x]);
                 SDL_RendererFlip a;
-                SDL_RenderCopyEx(pRenderer,pMap->pTileShet,&pMap->tileIndex[7],&pMap->tileRect[y][x],180,NULL,a);
+                SDL_RenderCopyEx(pRenderer,pTileShet,&tileIndex[7],&tileRect[y][x],180,NULL,a);
+                break;
+            case 'i':
+
+                break;
+            case 'j':
+
+                break;
+            case 'k':
+
                 break;
             default:
-                break;
+                break;// fixa så att de går i stigande ording 
             }
         }
         

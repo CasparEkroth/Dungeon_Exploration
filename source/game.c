@@ -8,11 +8,18 @@ void gameRun(Game *pGame,SDL_Event event){
         update(pGame);
         render(pGame);
         pGame->pControls->previousTime = pGame->pControls->currentTime;
+        if(!pGame->pMenu->pBoolien->isOpen && pGame->pMenu->pBoolien->isMakingMap){
+            pGame->game_is_running = false;
+            pGame->isMakingMap = true;
+        }
     }
 }
 
 void update(Game *pGame){
     pGame->pPlayer->deltaTime += pGame->pControls->currentTime - pGame->pControls->previousTime;
+    if(pGame->pMenu->pBoolien->isOpen){
+        updateMenu(pGame->pRenderer,pGame->pMenu);
+    }
     worldUpdate(pGame);
 }
 
@@ -21,7 +28,8 @@ void render(Game *pGame){
     if(pGame->pMenu->pBoolien->isOpen){
         renderMenu(pGame->pRenderer,pGame->pMenu);
     }else{
-        renderMap(pGame->pRenderer,pGame->pMap);
+        renderMap(pGame->pRenderer,pGame->pMap->tileMap,pGame->pMap->tileIndex,pGame->pMap->pTileShet,
+                pGame->pMap->tileRect);
         rednerPlayer(pGame->pRenderer,pGame->pPlayer,pGame->pControls->pCamera->Ofset);
         if(pGame->pPlayer->pInventory->open){
             //render invetory
@@ -31,7 +39,6 @@ void render(Game *pGame){
 }
 
 void input(Game *pGame, SDL_Event event){
-    //SDL_ShowCursor(SDL_DISABLE);
     pGame->pControls->pCamera->Ofset.x = 0;
     pGame->pControls->pCamera->Ofset.y = 0;
     pGame->pControls->deltaTimeResize += pGame->pControls->currentTime - pGame->pControls->previousTime;
@@ -43,25 +50,13 @@ void input(Game *pGame, SDL_Event event){
             switch (event.type){
             case SDL_QUIT: 
                 pGame->game_is_running = false;
+                pGame->isProgramnRunning = false;
                 break;
             case SDL_KEYDOWN:
                 pGame->pControls->keys[event.key.keysym.scancode] = true; //kan man göra till en funktion 
                 break;
             case SDL_KEYUP:
                 pGame->pControls->keys[event.key.keysym.scancode] = false;
-                break;
-            case SDL_TEXTINPUT:
-                if(pGame->pControls->keys[SDL_SCANCODE_0]) pGame->pMenu->pBoolien->isOpen = false;
-                if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
-                if(pGame->pControls->keys[SDL_SCANCODE_BACKSPACE]){
-                    pGame->pMenu->stringPlayerName[strlen(pGame->pMenu->stringPlayerName)-1] = ' ';
-                }
-                if(pGame->pMenu->pBoolien->isOpen){//text handler 
-                    strcat(pGame->pMenu->stringPlayerName,event.text.text); 
-                    pGame->pMenu->playerName = makeStringInToSDL_Texture(pGame->pMenu->stringPlayerName,pGame->pMenu->pFont,pGame->pRenderer);
-                    pGame->pMenu->leter++;
-                    pGame->pMenu->rect[1].w = 15+(pGame->pMenu->leter*15);
-                }
                 break;
             default:
                 break;
@@ -70,11 +65,15 @@ void input(Game *pGame, SDL_Event event){
     }
     if(pGame->pPlayer->pInventory->open){
         //intput för inventory
-
     }else if(pGame->pMenu->pBoolien->isOpen){
-        if(pGame->pControls->keys[SDL_SCANCODE_0]) pGame->pMenu->pBoolien->isOpen = false;
+        //inputs a in the menu.c file 
+        if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]){
+            pGame->pMenu->pBoolien->isOpen = false;
+            pGame->game_is_running = false;
+            pGame->isProgramnRunning = false;
+        } 
     }else{
-        if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false;
+        if(pGame->pControls->keys[SDL_SCANCODE_ESCAPE]) pGame->game_is_running = false; pGame->isProgramnRunning = false;
         if(pGame->pControls->keys[SDL_SCANCODE_LEFT])  pGame->pControls->pCamera->Ofset.x += (pGame->pMap->TILE_SIZE_W / SLOWNES); 
         if(pGame->pControls->keys[SDL_SCANCODE_RIGHT])  pGame->pControls->pCamera->Ofset.x -= (pGame->pMap->TILE_SIZE_W / SLOWNES); 
         if(pGame->pControls->keys[SDL_SCANCODE_UP])  pGame->pControls->pCamera->Ofset.y += (pGame->pMap->TILE_SIZE_H / SLOWNES); 
@@ -84,8 +83,7 @@ void input(Game *pGame, SDL_Event event){
             pGame->pControls->pCamera->Ofset.x = (pGame->pControls->pCamera->Ofset.x/1.7);
             pGame->pControls->pCamera->Ofset.y = (pGame->pControls->pCamera->Ofset.y/1.7);
         }
-    }
-    if(pGame->pControls->keys[SDL_SCANCODE_P]){
+        if(pGame->pControls->keys[SDL_SCANCODE_P]){
         if(pGame->pControls->deltaTimeResize <= 2000) return;
         if (SDL_GetWindowFlags(pGame->pWindow) & SDL_WINDOW_FULLSCREEN){
             SDL_SetWindowFullscreen(pGame->pWindow, 0);  // Switch back to windowed mode
@@ -94,6 +92,7 @@ void input(Game *pGame, SDL_Event event){
         }
             updateTileSizeForMenu(pGame->pWindow,pGame->pMap,pGame->pMenu,pGame->pControls->pCamera);//temporery
             pGame->pControls->deltaTimeResize = 0;
+    }
     }
 }
 
@@ -106,7 +105,6 @@ void worldUpdate(Game *pGame){ // shifting the map
     }
     pGame->pControls->pCamera->curentPos.x += pGame->pControls->pCamera->Ofset.x;
     pGame->pControls->pCamera->curentPos.y += pGame->pControls->pCamera->Ofset.y;
-
 }
 
 int initialize_window(Game *pGame){ // Initialiserar SDL och skapar fönster
