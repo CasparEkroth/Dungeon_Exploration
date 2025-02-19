@@ -10,8 +10,8 @@
 #include <string.h>
 
 #define FILE_LENGTH 40
-#define NUMMBER_OF_TILSE_Y 25
-#define NUMMBER_OF_TILSE_X 25
+#define NUMMBER_OF_TILSE_Y 75
+#define NUMMBER_OF_TILSE_X 75
 #define NUMMBER_OF_DIFFERENT_TILSE 10 
 #define TILE_SIZE 32 
 
