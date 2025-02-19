@@ -45,7 +45,7 @@ void renderMap(SDL_Renderer *pRenderer,char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_
                 break;
             case 'i':
 
-                break;
+                break;//göt hemma 
             case 'j':
 
                 break;
@@ -53,7 +53,7 @@ void renderMap(SDL_Renderer *pRenderer,char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_
 
                 break;
             default:
-                break;// fixa så att de går i stigande ording 
+                break;
             }
         }
         

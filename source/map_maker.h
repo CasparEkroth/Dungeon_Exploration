@@ -19,21 +19,35 @@ typedef struct {
     bool keys[SDL_NUM_SCANCODES];
 }MapMaker;
 
-MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char romeName[NAME],char fileList[NAME]);
+
+MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char romeName[NAME]);
+//initialize the map maker 
 
 bool isOnListofRom(char fileName[NAME],char romName[NAME],int *fileIndex);
-
+//cheks if it is a new rom and gives the fileIndex, so we can save the new rom
 
 void maker(MapMaker *pMapMaker, Game *pGame,bool *isGameRunnig,bool *isProgramRunnig);
+// the main funtionen that handels all of the inportent stuff
+
 void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *isProgramRunnig);
+// tacks the inputs to make chenges
 
 void maker_update(MapMaker *pMapMaker);
+// only movs the map
+
 void maker_render(SDL_Renderer *pRendererer,MapMaker *pMapMaker,Map *pMap,SDL_Event event);
+//render
 
 void saveMademap(MapMaker *pMapMaker);
-
+//savse the map by rewrhitning the hole thing 
 
 #endif
-
-// det kommer att var en selekt funktion där man sedan plaserar ut de 
-// tiles man vill och därefter väljer en till 
+//#######################################################################################
+//#########     DOKUMETINTON       ######################################################
+//#######################################################################################
+// what do you need to use this file 
+//
+//
+//
+//
+//#######################################################################################

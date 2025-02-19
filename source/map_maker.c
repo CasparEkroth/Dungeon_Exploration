@@ -2,7 +2,7 @@
 //input 
 //render 
 //seving to file                                                                                //ta bort
-MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char romeName[NAME],char fileList[NAME]){
+MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char romeName[NAME]){
     MapMaker* pMapMaker = malloc(sizeof(MapMaker));
     if(!pMapMaker){
         fprintf(stderr,"Erorr alocating memory for MapMaker\n");
@@ -42,8 +42,6 @@ MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char rome
 void maker(MapMaker *pMapMaker, Game *pGame,bool *isGameRunnig,bool *isProgramRunnig){
     SDL_Event event;
     while (pMapMaker->isMakingMap){
-        //if(!pMapMaker->isMakingMap) return;
-        //printf("in maker\n");
         while (SDL_PollEvent(&event)){
             maker_input(pMapMaker,event,isGameRunnig,isProgramRunnig);
         }
@@ -66,7 +64,6 @@ void maker_render(SDL_Renderer *pRenderer,MapMaker *pMapMaker,Map *pMap,SDL_Even
                 SDL_RenderDrawRect(pRenderer, &A); 
                 if(mouseState){
                     pMapMaker->selectedTile = ('a'+i);
-                    //printf("%c\n",pMapMaker->selectedTile);
                     pMapMaker->isChosingNewTile = false;
                 }
             }
@@ -106,7 +103,7 @@ void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *is
         break;
     case SDL_MOUSEBUTTONDOWN:
         pMapMaker->keys[event.button.state] = SDL_PRESSED;
-        break;// fixa plasering va vld tile samt att man (input) för att göra en tile till (void)
+        break;
     case SDL_MOUSEBUTTONUP:
         pMapMaker->keys[event.button.state] = SDL_RELEASED;
         break;
