@@ -12,10 +12,11 @@ int main(){
     while (g.isProgramnRunning){
         gameRun(&g,event);
         if(g.isMakingMap && g.pMenu->pBoolien->isDone){
+            g.pMenu->pBoolien->isDone = false;
             m = initMapMaker("resourses/mapFile.txt",g.pMap->TILE_SIZE_W,
                             g.pMap->TILE_SIZE_H,g.pMenu->stringPlayerName);
-            //printMap(m->map);
             maker(m,&g,&g.game_is_running,&g.isProgramnRunning);
+            printf("hej\n");
         }
     }
     closeGame(&g);

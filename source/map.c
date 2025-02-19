@@ -88,7 +88,6 @@ void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X], char f
         }
     }
     fclose(fp);
-    //printMap(tileMap);
 }
 
 Map *createMap(SDL_Renderer *pRenderre){
