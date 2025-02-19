@@ -202,7 +202,6 @@ void saveMademap(MapMaker *pMapMaker){
 bool isOnListofRom(char fileName[NAME],char romName[NAME],int *fileIndex){
     char buffer[256];
     int contRom = 0,line = 0;
-
     FILE *fp = fopen(fileName, "r");
     if (fp == NULL) {
         fprintf(stderr,"Error: Clude not open %s!\n",fileName);

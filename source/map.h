@@ -12,7 +12,7 @@
 #define FILE_LENGTH 40
 #define NUMMBER_OF_TILSE_Y 75
 #define NUMMBER_OF_TILSE_X 75
-#define NUMMBER_OF_DIFFERENT_TILSE 10 
+#define NUMMBER_OF_DIFFERENT_TILSE 13 
 #define TILE_SIZE 32 
 
 #define VISIBLE_WINDOW_Y 15 // * tile_size (v)

@@ -44,13 +44,24 @@ void renderMap(SDL_Renderer *pRenderer,char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_
                 SDL_RenderCopyEx(pRenderer,pTileShet,&tileIndex[7],&tileRect[y][x],180,NULL,a);
                 break;
             case 'i':
-
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[2],&tileRect[y][x]);
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[8],&tileRect[y][x]);
                 break;//göt hemma 
             case 'j':
-
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[2],&tileRect[y][x]);
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[9],&tileRect[y][x]);
                 break;
             case 'k':
-
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[10],&tileRect[y][x]);
+                break;
+            case 'l':
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[11],&tileRect[y][x]);
+                break;
+            case 'm':
+                SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[12],&tileRect[y][x]);
+                break;
+            case 'n':
+                //SDL_RenderCopy(pRenderer,pTileShet,&tileIndex[13],&tileRect[y][x]);
                 break;
             default:
                 break;
@@ -127,6 +138,12 @@ Map *createMap(SDL_Renderer *pRenderre){
     pMap->tileIndex[5] = (SDL_Rect){80,150,16,16}; //wall side (left)
     pMap->tileIndex[6] = (SDL_Rect){127,165,16,16}; //wall/turn (rhigt -> dowen)
     pMap->tileIndex[7] = (SDL_Rect){81,150,16,16}; //wall side (left)(neds Ex)
+    pMap->tileIndex[8] = (SDL_Rect){0,112,16,16};//skull
+    pMap->tileIndex[9] = (SDL_Rect){16,112,16,16};//chest
+    pMap->tileIndex[10] = (SDL_Rect){160,80,16,16};//piler part 1
+    pMap->tileIndex[11] = (SDL_Rect){160,96,16,16};//piler part 2
+    pMap->tileIndex[12] = (SDL_Rect){160,114,16,16};//piler part 3
+
     return pMap;
 }
 
