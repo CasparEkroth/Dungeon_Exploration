@@ -35,7 +35,7 @@ MapMaker* initMapMaker(char fileName[NAME],int tileSizeW,int tileSizeH,char rome
     pMapMaker->zoom = 0;
     pMapMaker->visibleWindow.x = VISIBLE_WINDOW_X;
     pMapMaker->visibleWindow.y = VISIBLE_WINDOW_Y;
-    pMapMaker->selectedTile = ' ';
+    pMapMaker->selectedTile = ('a'-1);
     pMapMaker->highlight_rect = (SDL_Point){0,0};
     pMapMaker->mapOfset = (SDL_Point){0,0};
     pMapMaker->mousePos = (SDL_Point){0,0};
@@ -61,7 +61,8 @@ void maker_render(SDL_Renderer *pRenderer,MapMaker *pMapMaker,Map *pMap,SDL_Even
     if(pMapMaker->isChosingNewTile){
         SDL_Rect A ={32,32,32,32};
         for (int i = 0; i <NUMMBER_OF_DIFFERENT_TILSE; i++){
-            SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[i],&A);
+            //SDL_RenderCopy(pRenderer,pMap->pTileShet,&pMap->tileIndex[i],&A);
+            renderTile(pRenderer,'a'+i,pMap->tileIndex,A,pMap->pTileShet);
             if(pointInRect(A,pMapMaker->mousePos)){
                 SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);  // Red
                 SDL_RenderDrawRect(pRenderer, &A); 
@@ -71,6 +72,10 @@ void maker_render(SDL_Renderer *pRenderer,MapMaker *pMapMaker,Map *pMap,SDL_Even
                 }
             }
             A.x += 64;
+            if(A.x > 64*10){
+                A.x = 32;
+                A.y += 64;
+            }
         }
     }else{
         renderMap(pRenderer,pMapMaker->map,pMap->tileIndex,pMap->pTileShet,pMapMaker->rect_map);
@@ -150,12 +155,13 @@ void maker_input(MapMaker *pMapMaker,SDL_Event event,bool *isGameRunnig,bool *is
     if(pMapMaker->keys[SDL_SCANCODE_RIGHT]) pMapMaker->mapOfset.x -= SPEED;
     if(pMapMaker->keys[SDL_SCANCODE_N]) pMapMaker->isChosingNewTile = true;
     if(pMapMaker->keys[SDL_SCANCODE_RETURN]) pMapMaker->isChosingNewTile = false;
+    if(pMapMaker->keys[SDL_SCANCODE_V]) pMapMaker->selectedTile = ('a'-1);
     if(pMapMaker->keys[SDL_SCANCODE_P]) pMapMaker->zoom = -1; 
     if(pMapMaker->keys[SDL_SCANCODE_M]) pMapMaker->zoom = 1; 
 }
 
 void saveMademap(MapMaker *pMapMaker){
-    FILE *fp = fopen(pMapMaker->fileName, "r");
+    FILE *fp = fopen(pMapMaker->fileName, "r");// något blir fel arayen skjut åt ett håll
     if (!fp) {
         fprintf(stderr, "Error: Could not open %s for reading!\n", pMapMaker->fileName);
         return;
