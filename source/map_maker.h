@@ -48,8 +48,11 @@ void saveMademap(MapMaker *pMapMaker);
 //#########     DOKUMETINTON       ######################################################
 //#######################################################################################
 // what do you need to use this file 
-//
-//
-//
-//
+// [file for the maps]
+// [bool for the game and the program]
+// [SDL_window,SDL_renderer]
+//###################################
+// you will need a functioning system får rendering the map and the tiles individuali 
+// that means also having a SDL_Texture for the tilemap and Rest for the spirits
+// there are also a couple of other functions that you will need
 //#######################################################################################
