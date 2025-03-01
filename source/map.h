@@ -10,9 +10,9 @@
 #include <string.h>
 
 #define FILE_LENGTH 40
-#define NUMMBER_OF_TILSE_Y 25
-#define NUMMBER_OF_TILSE_X 25
-#define NUMMBER_OF_DIFFERENT_TILSE 10 
+#define NUMMBER_OF_TILSE_Y 75
+#define NUMMBER_OF_TILSE_X 75
+#define NUMMBER_OF_DIFFERENT_TILSE 18 
 #define TILE_SIZE 32 
 
 #define VISIBLE_WINDOW_Y 15 // * tile_size (v)
@@ -51,7 +51,10 @@ void renderMap(SDL_Renderer *pRenderer,char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_
                 SDL_Rect tileIndex[NUMMBER_OF_DIFFERENT_TILSE],SDL_Texture *pTileShet,
                 SDL_Rect tileRect[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X]);
 
-void updatCurentMap(Map *pMap);
+void renderTile(SDL_Renderer *pRenderer,char tile,SDL_Rect tileIndex[NUMMBER_OF_DIFFERENT_TILSE],
+                SDL_Rect tileRect,SDL_Texture *pTileShet);
+
+void updatCurentMap(SDL_Rect tileRect[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X],int TILE_SIZE_W,int TILE_SIZE_H);
 
 void trimWhitespace(char *str);
 void redeFileForMap(char tileMap[NUMMBER_OF_TILSE_Y][NUMMBER_OF_TILSE_X],char fileName[],char newRom[]);
